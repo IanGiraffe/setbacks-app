@@ -1,0 +1,104 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "usage": "Envelope",
+          "id": "Ol-0MM_c0t1do55FkPBWC",
+          "flow": {
+            "id": "9ed6808627da407ca40b2f5fab01e326",
+            "inputs": {
+              "62f9968fb7ab458698ecc6b32cc20fef": {
+                "type": "envelope",
+                "parameters": {
+                  "version": "beta",
+                  "maxHeight": 7.62,
+                  "sideIndices": {
+                    "rear": [],
+                    "side": [
+                      0,
+                      2
+                    ],
+                    "front": [
+                      1
+                    ]
+                  },
+                  "setbackSteps": {
+                    "rear": [
+                      {
+                        "inset": 4.572,
+                        "height": 0
+                      },
+                      {
+                        "inset": 4.572
+                      }
+                    ],
+                    "side": [
+                      {
+                        "inset": 1.524,
+                        "height": 0
+                      },
+                      {
+                        "inset": 1.524
+                      }
+                    ],
+                    "front": [
+                      {
+                        "inset": 4.572,
+                        "height": 0
+                      },
+                      {
+                        "inset": 4.572
+                      }
+                    ]
+                  },
+                  "hasSetbackOutput": false
+                }
+              }
+            }
+          },
+          "appId": "1",
+          "color": "#7af3ff",
+          "public": true,
+          "stroke": "#257676",
+          "projectId": "58700",
+          "stackOrder": 0,
+          "fillOpacity": 0.4282,
+          "strokeOpacity": 1,
+          "layerId": "setbacks"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.70924672,
+                30.22920119
+              ],
+              [
+                -97.70900398,
+                30.22954418
+              ],
+              [
+                -97.70938486,
+                30.22973827
+              ],
+              [
+                -97.70961821,
+                30.22937616
+              ],
+              [
+                -97.70925276,
+                30.22919192
+              ],
+              [
+                -97.70924672,
+                30.22920119
+              ]
+            ]
+          ]
+        }
+      }
+    ]
+  }

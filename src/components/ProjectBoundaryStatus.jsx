@@ -1,29 +1,23 @@
 import React from 'react';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 
-const ProjectBoundaryStatus = ({ hasProject, projectName }) => {
+const ProjectBoundaryStatus = ({ hasProject }) => {
+  // Only show when there's no project boundary
+  if (hasProject) {
+    return null;
+  }
+
   return (
-    <div className="boundary-status">
-      <h3>Project Status</h3>
-      {hasProject ? (
-        <div className="status-card success">
-          <div className="status-icon">✓</div>
-          <div className="status-content">
-            <h4>Project Boundary Detected</h4>
-            {projectName && <p>Project: {projectName}</p>}
-            <p>Ready to generate building envelope</p>
-          </div>
-        </div>
-      ) : (
-        <div className="status-card warning">
-          <div className="status-icon">⚠</div>
-          <div className="status-content">
-            <h4>No Project Boundary</h4>
-            <p>Please ensure you have a project with a defined boundary in Giraffe.</p>
-            <p>The building envelope will be generated from the project boundary.</p>
-          </div>
-        </div>
-      )}
-    </div>
+    <motion.div 
+      className="mb-6"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <p className="text-yellow-700 font-medium">
+        Boundary not detected. Please ensure you have a project with a defined boundary in Giraffe.
+      </p>
+    </motion.div>
   );
 };
 

@@ -92,6 +92,22 @@ export const getUnitSymbol = (unit) => {
 };
 
 /**
+ * Get the full unit name for display in toggles
+ * @param {string} unit - Unit type
+ * @returns {string} Full unit name
+ */
+export const getUnitDisplayName = (unit) => {
+  switch (unit) {
+    case UNITS.FEET:
+      return 'feet';
+    case UNITS.METERS:
+      return 'meters';
+    default:
+      return unit;
+  }
+};
+
+/**
  * Format a value with appropriate decimal places for the unit
  * @param {number} value - The value to format
  * @param {string} unit - The unit type
