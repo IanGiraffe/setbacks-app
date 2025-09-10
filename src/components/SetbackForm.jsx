@@ -35,7 +35,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange }
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Setback Parameters
+          Parameters
         </motion.h3>
         <motion.div
           initial={{ opacity: 0, x: 20 }}

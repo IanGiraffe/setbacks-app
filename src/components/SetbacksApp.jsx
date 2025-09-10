@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { rpc } from '@gi-nx/iframe-sdk';
 import { useGiraffeState } from '@gi-nx/iframe-sdk-react';
 import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
@@ -11,8 +11,10 @@ const SetbacksApp = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState(null);
   const [currentUnit, setCurrentUnit] = useState(UNITS.FEET);
+  const [selectedEnvelope, setSelectedEnvelope] = useState(null);
   
   const project = useGiraffeState('project');
+  const selectedFeatures = useGiraffeState('selected');
   
   // Default values in feet
   const [setbacks, setSetbacks] = useState({
@@ -23,6 +25,40 @@ const SetbacksApp = () => {
   });
 
   const hasProjectBoundary = project && project.geometry;
+
+  // Listen for envelope selection
+  useEffect(() => {
+    if (selectedFeatures && selectedFeatures.features) {
+      const envelope = selectedFeatures.features.find(feature => 
+        feature.properties && feature.properties.usage === 'Envelope'
+      );
+      
+      if (envelope) {
+        setSelectedEnvelope(envelope);
+        // Extract setback parameters from the selected envelope and populate the form
+        const envelopeParams = envelope.properties?.flow?.inputs?.['62f9968fb7ab458698ecc6b32cc20fef']?.parameters;
+        if (envelopeParams) {
+          const extractedSetbacks = {
+            maxHeight: envelopeParams.maxHeight || 40,
+            frontSetback: envelopeParams.setbackSteps?.front?.[0]?.inset || 25,
+            sideSetback: envelopeParams.setbackSteps?.side?.[0]?.inset || 5,
+            rearSetback: envelopeParams.setbackSteps?.rear?.[0]?.inset || 10
+          };
+          
+          // Convert from meters to current unit if needed
+          const convertedSetbacks = currentUnit === UNITS.FEET 
+            ? convertSetbacksUnits(extractedSetbacks, UNITS.METERS, UNITS.FEET)
+            : extractedSetbacks;
+          
+          setSetbacks(convertedSetbacks);
+        }
+      } else {
+        setSelectedEnvelope(null);
+      }
+    } else {
+      setSelectedEnvelope(null);
+    }
+  }, [selectedFeatures, currentUnit]);
 
   const handleUnitChange = (newUnit) => {
     if (newUnit !== currentUnit) {
@@ -48,14 +84,46 @@ const SetbacksApp = () => {
         ? convertSetbacksUnits(setbacks, UNITS.FEET, UNITS.METERS)
         : setbacks;
       
-      const envelopeFeature = createEnvelopeFeature(project, setbacksInMeters);
-      
-      await rpc.invoke('createRawSection', [envelopeFeature]);
-      
-      console.log('Building envelope created successfully');
+      if (selectedEnvelope) {
+        // Get the current state of the selected envelope (in case user modified sideIndices after selection)
+        const currentSelectedFeatures = await rpc.invoke('getSelectedFeatures', []);
+        const currentEnvelope = currentSelectedFeatures.features.find(feature => 
+          feature.properties && 
+          feature.properties.usage === 'Envelope' && 
+          feature.properties.id === selectedEnvelope.properties.id
+        );
+        
+        if (!currentEnvelope) {
+          throw new Error('Selected envelope is no longer available');
+        }
+        
+        // Update current envelope - create a deep copy and only modify the setback parameters
+        const updatedEnvelope = JSON.parse(JSON.stringify(currentEnvelope));
+        
+        // Update only the parameters we care about, preserving everything else including current sideIndices
+        const params = updatedEnvelope.properties.flow.inputs['62f9968fb7ab458698ecc6b32cc20fef'].parameters;
+        params.maxHeight = setbacksInMeters.maxHeight;
+        
+        // Update setback steps while preserving structure and current sideIndices mapping
+        // Note: We preserve params.sideIndices to maintain user-configured edge mappings
+        params.setbackSteps.rear[0].inset = setbacksInMeters.rearSetback;
+        params.setbackSteps.rear[1].inset = setbacksInMeters.rearSetback;
+        params.setbackSteps.side[0].inset = setbacksInMeters.sideSetback;
+        params.setbackSteps.side[1].inset = setbacksInMeters.sideSetback;
+        params.setbackSteps.front[0].inset = setbacksInMeters.frontSetback;
+        params.setbackSteps.front[1].inset = setbacksInMeters.frontSetback;
+        
+        await rpc.invoke('updateRawSection', [updatedEnvelope]);
+        console.log('Building envelope updated successfully');
+      } else {
+        // Create new envelope
+        const envelopeFeature = createEnvelopeFeature(project, setbacksInMeters);
+        await rpc.invoke('createRawSection', [envelopeFeature]);
+        console.log('Building envelope created successfully');
+      }
     } catch (err) {
-      setError('Failed to create building envelope: ' + err.message);
-      console.error('Error creating building envelope:', err);
+      setError(`Failed to ${selectedEnvelope ? 'update' : 'create'} building envelope: ` + err.message);
+      console.error(`Error ${selectedEnvelope ? 'updating' : 'creating'} building envelope:`, err);
     } finally {
       setIsGenerating(false);
     }
@@ -151,7 +219,7 @@ const SetbacksApp = () => {
             Envelope Generator
           </h1>
           <p className="text-sm text-slate-600 font-medium">
-            Create building envelopes with custom setbacks from project boundaries
+            Create building envelopes that show setbacks and height limits
           </p>
         </motion.div>
 
@@ -205,12 +273,43 @@ const SetbacksApp = () => {
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />
-                    Generating...
+                    {selectedEnvelope ? 'Updating...' : 'Generating...'}
                   </motion.span>
                 ) : (
-                  'Generate Envelope'
+                  selectedEnvelope ? 'Modify Selected Envelope' : 'Generate Envelope'
                 )}
               </motion.button>
+            </motion.div>
+
+            <motion.div 
+              className="mt-8 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <h3 className="text-lg font-bold text-giraffe-dark mb-4">
+                How to Modify Edge Designations
+              </h3>
+              
+              <div className="mb-4 flex justify-center">
+                <img 
+                  src="/Envelope Example.gif" 
+                  alt="How to modify edge designations"
+                  className="max-w-full h-auto rounded-lg border-2 border-slate-300 shadow-md"
+                />
+              </div>
+              
+              <div className="bg-white p-4 rounded-lg border-2 border-slate-200 shadow-sm text-left max-w-md mx-auto">
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  <strong className="text-giraffe-dark">To customize edge designations:</strong>
+                </p>
+                <ol className="mt-2 text-sm text-slate-700 space-y-1 list-decimal list-inside">
+                  <li>Select your generated envelope in Giraffe</li>
+                  <li>Press <strong>SHIFT+A</strong> to view the property line designations</li>
+                  <li>Click the arrow icons on each property edge</li>
+                  <li>Choose the appropriate designation</li>
+                </ol>
+              </div>
             </motion.div>
           </motion.div>
         )}
