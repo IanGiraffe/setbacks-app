@@ -206,20 +206,20 @@ const SetbacksApp = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="h-full bg-gradient-to-br from-slate-50 to-slate-100 p-4"
+      className="h-full bg-gradient-to-br from-slate-50 to-slate-100 p-3"
     >
       <div className="w-full h-full">
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-6 text-center"
+          className="mb-4 text-center"
         >
-          <h1 className="text-2xl font-black text-giraffe-dark mb-2 tracking-tight">
+          <h1 className="text-xl font-black text-giraffe-dark mb-1 tracking-tight">
             Envelope Generator
           </h1>
-          <p className="text-sm text-slate-600 font-medium">
-            Create building envelopes that show setbacks and height limits
+          <p className="text-xs text-slate-600 font-medium">
+            Create envelopes that show setbacks and height limits
           </p>
         </motion.div>
 
@@ -240,70 +240,35 @@ const SetbacksApp = () => {
               disabled={isGenerating}
               currentUnit={currentUnit}
               onUnitChange={handleUnitChange}
+              onGenerate={generateBuildingEnvelope}
+              isGenerating={isGenerating}
+              selectedEnvelope={selectedEnvelope}
             />
 
             <motion.div 
-              className="mt-6 flex justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <motion.button 
-                className={cn(
-                  "bg-giraffe-yellow hover:bg-yellow-300 text-giraffe-dark",
-                  "px-6 py-3 text-base font-black uppercase tracking-wide",
-                  "border-3 border-black shadow-brutal hover:shadow-none hover:translate-x-1 hover:translate-y-1",
-                  "transition-all duration-150 active:shadow-none active:translate-x-1 active:translate-y-1",
-                  "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-brutal disabled:hover:translate-x-0 disabled:hover:translate-y-0",
-                  "rounded-lg w-full max-w-xs"
-                )}
-                onClick={generateBuildingEnvelope}
-                disabled={isGenerating || !hasProjectBoundary}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {isGenerating ? (
-                  <motion.span 
-                    className="flex items-center justify-center gap-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <motion.div
-                      className="w-5 h-5 border-2 border-giraffe-dark border-t-transparent rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    />
-                    {selectedEnvelope ? 'Updating...' : 'Generating...'}
-                  </motion.span>
-                ) : (
-                  selectedEnvelope ? 'Modify Selected Envelope' : 'Generate Envelope'
-                )}
-              </motion.button>
-            </motion.div>
-
-            <motion.div 
-              className="mt-8 text-center"
+              className="mt-5 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <h3 className="text-lg font-bold text-giraffe-dark mb-4">
+              <h3 className="text-base font-bold text-giraffe-dark mb-3">
                 How to Modify Edge Designations
               </h3>
               
-              <div className="mb-4 flex justify-center">
+              <div className="mb-3 flex justify-center">
                 <img 
                   src="/Envelope Example.gif" 
                   alt="How to modify edge designations"
-                  className="max-w-full h-auto rounded-lg border-2 border-slate-300 shadow-md"
+                  className="max-w-full h-auto rounded-md border border-slate-300 shadow-sm"
+                  style={{ maxHeight: '300px' }}
                 />
               </div>
               
-              <div className="bg-white p-4 rounded-lg border-2 border-slate-200 shadow-sm text-left max-w-md mx-auto">
-                <p className="text-sm text-slate-700 leading-relaxed">
+              <div className="bg-white p-3 rounded-md border border-slate-200 shadow-sm text-left max-w-sm mx-auto">
+                <p className="text-xs text-slate-700 leading-snug">
                   <strong className="text-giraffe-dark">To customize edge designations:</strong>
                 </p>
-                <ol className="mt-2 text-sm text-slate-700 space-y-1 list-decimal list-inside">
+                <ol className="mt-1 text-xs text-slate-700 space-y-0.5 list-decimal list-inside leading-tight">
                   <li>Select your generated envelope in Giraffe</li>
                   <li>Press <strong>SHIFT+A</strong> to view the property line designations</li>
                   <li>Click the arrow icons on each property edge</li>
@@ -319,9 +284,9 @@ const SetbacksApp = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="mt-6 p-4 bg-red-50 border-3 border-red-500 rounded-lg"
+            className="mt-4 p-3 bg-red-50 border-2 border-red-500 rounded-md"
           >
-            <div className="text-red-800 font-bold">
+            <div className="text-red-800 font-semibold text-sm">
               <strong className="text-red-900">Error:</strong> {error}
             </div>
           </motion.div>
