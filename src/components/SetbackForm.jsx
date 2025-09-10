@@ -1,6 +1,8 @@
 import React from 'react';
+import UnitsToggle from './UnitsToggle';
+import { getUnitSymbol, formatValueForUnit } from '../utils/unitConversions';
 
-const SetbackForm = ({ setbacks, onChange, disabled }) => {
+const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange }) => {
   const handleInputChange = (field, value) => {
     const numValue = parseFloat(value) || 0;
     onChange({
@@ -9,19 +11,28 @@ const SetbackForm = ({ setbacks, onChange, disabled }) => {
     });
   };
 
+  const unitSymbol = getUnitSymbol(currentUnit);
+
   return (
     <div className="setback-form">
-      <h3>Setback Parameters</h3>
+      <div className="form-header">
+        <h3>Setback Parameters</h3>
+        <UnitsToggle 
+          currentUnit={currentUnit}
+          onUnitChange={onUnitChange}
+          disabled={disabled}
+        />
+      </div>
       
       <div className="form-grid">
         <div className="form-group">
           <label htmlFor="maxHeight">
-            Max Height (m)
+            Max Height ({unitSymbol})
           </label>
           <input
             type="number"
             id="maxHeight"
-            value={setbacks.maxHeight}
+            value={formatValueForUnit(setbacks.maxHeight, currentUnit)}
             onChange={(e) => handleInputChange('maxHeight', e.target.value)}
             disabled={disabled}
             min="0"
@@ -31,12 +42,12 @@ const SetbackForm = ({ setbacks, onChange, disabled }) => {
 
         <div className="form-group">
           <label htmlFor="frontSetback">
-            Front Setback (m)
+            Front Setback ({unitSymbol})
           </label>
           <input
             type="number"
             id="frontSetback"
-            value={setbacks.frontSetback}
+            value={formatValueForUnit(setbacks.frontSetback, currentUnit)}
             onChange={(e) => handleInputChange('frontSetback', e.target.value)}
             disabled={disabled}
             min="0"
@@ -46,12 +57,12 @@ const SetbackForm = ({ setbacks, onChange, disabled }) => {
 
         <div className="form-group">
           <label htmlFor="sideSetback">
-            Side Setback (m)
+            Side Setback ({unitSymbol})
           </label>
           <input
             type="number"
             id="sideSetback"
-            value={setbacks.sideSetback}
+            value={formatValueForUnit(setbacks.sideSetback, currentUnit)}
             onChange={(e) => handleInputChange('sideSetback', e.target.value)}
             disabled={disabled}
             min="0"
@@ -61,12 +72,12 @@ const SetbackForm = ({ setbacks, onChange, disabled }) => {
 
         <div className="form-group">
           <label htmlFor="rearSetback">
-            Rear Setback (m)
+            Rear Setback ({unitSymbol})
           </label>
           <input
             type="number"
             id="rearSetback"
-            value={setbacks.rearSetback}
+            value={formatValueForUnit(setbacks.rearSetback, currentUnit)}
             onChange={(e) => handleInputChange('rearSetback', e.target.value)}
             disabled={disabled}
             min="0"
@@ -78,10 +89,10 @@ const SetbackForm = ({ setbacks, onChange, disabled }) => {
       <div className="setback-info">
         <h4>Current Settings:</h4>
         <ul>
-          <li>Maximum Height: {setbacks.maxHeight}m</li>
-          <li>Front Setback: {setbacks.frontSetback}m</li>
-          <li>Side Setback: {setbacks.sideSetback}m</li>
-          <li>Rear Setback: {setbacks.rearSetback}m</li>
+          <li>Maximum Height: {formatValueForUnit(setbacks.maxHeight, currentUnit)} {unitSymbol}</li>
+          <li>Front Setback: {formatValueForUnit(setbacks.frontSetback, currentUnit)} {unitSymbol}</li>
+          <li>Side Setback: {formatValueForUnit(setbacks.sideSetback, currentUnit)} {unitSymbol}</li>
+          <li>Rear Setback: {formatValueForUnit(setbacks.rearSetback, currentUnit)} {unitSymbol}</li>
         </ul>
       </div>
     </div>

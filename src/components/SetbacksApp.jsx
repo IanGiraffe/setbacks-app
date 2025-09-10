@@ -3,23 +3,35 @@ import { giraffeState, rpc } from '@gi-nx/iframe-sdk';
 import { useGiraffeState } from '@gi-nx/iframe-sdk-react';
 import SetbackForm from './SetbackForm';
 import ProjectBoundaryStatus from './ProjectBoundaryStatus';
+import { UNITS, convertSetbacksUnits, feetToMeters } from '../utils/unitConversions';
 import './SetbacksApp.css';
 
 const SetbacksApp = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState(null);
+  const [currentUnit, setCurrentUnit] = useState(UNITS.FEET);
   
   const project = useGiraffeState('project');
   const projectOrigin = useGiraffeState('projectOrigin');
   
+  // Default values in feet
   const [setbacks, setSetbacks] = useState({
-    maxHeight: 20,
-    frontSetback: 2,
-    sideSetback: 3,
-    rearSetback: 6
+    maxHeight: 65.6, // ~20m in feet
+    frontSetback: 6.6, // ~2m in feet
+    sideSetback: 9.8, // ~3m in feet
+    rearSetback: 19.7 // ~6m in feet
   });
 
   const hasProjectBoundary = project && project.geometry;
+
+  const handleUnitChange = (newUnit) => {
+    if (newUnit !== currentUnit) {
+      // Convert current setback values to new unit
+      const convertedSetbacks = convertSetbacksUnits(setbacks, currentUnit, newUnit);
+      setSetbacks(convertedSetbacks);
+      setCurrentUnit(newUnit);
+    }
+  };
 
   const generateBuildingEnvelope = async () => {
     if (!hasProjectBoundary) {
@@ -31,7 +43,12 @@ const SetbacksApp = () => {
     setError(null);
 
     try {
-      const envelopeFeature = createEnvelopeFeature(project, setbacks);
+      // Convert setbacks to meters for Giraffe (if needed)
+      const setbacksInMeters = currentUnit === UNITS.FEET 
+        ? convertSetbacksUnits(setbacks, UNITS.FEET, UNITS.METERS)
+        : setbacks;
+      
+      const envelopeFeature = createEnvelopeFeature(project, setbacksInMeters);
       
       await rpc.invoke('createRawSection', [envelopeFeature]);
       
@@ -134,6 +151,8 @@ const SetbacksApp = () => {
             setbacks={setbacks}
             onChange={setSetbacks}
             disabled={isGenerating}
+            currentUnit={currentUnit}
+            onUnitChange={handleUnitChange}
           />
 
           <div className="generate-section">
