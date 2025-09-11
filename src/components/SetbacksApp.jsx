@@ -69,7 +69,7 @@ const SetbacksApp = () => {
     }
   };
 
-  const generateBuildingEnvelope = async () => {
+  const generateBuildingEnvelope = async (customSetbacks = {}) => {
     if (!hasProjectBoundary) {
       setError('No project boundary found');
       return;
@@ -104,6 +104,11 @@ const SetbacksApp = () => {
         const params = updatedEnvelope.properties.flow.inputs['62f9968fb7ab458698ecc6b32cc20fef'].parameters;
         params.maxHeight = setbacksInMeters.maxHeight;
         
+        // Convert custom setbacks to meters if needed
+        const customSetbacksInMeters = currentUnit === UNITS.FEET 
+          ? Object.fromEntries(Object.entries(customSetbacks).map(([key, value]) => [key, value * 0.3048]))
+          : customSetbacks;
+
         // Update setback steps while preserving structure and current sideIndices mapping
         // Note: We preserve params.sideIndices to maintain user-configured edge mappings
         params.setbackSteps.rear[0].inset = setbacksInMeters.rearSetback;
@@ -112,12 +117,42 @@ const SetbacksApp = () => {
         params.setbackSteps.side[1].inset = setbacksInMeters.sideSetback;
         params.setbackSteps.front[0].inset = setbacksInMeters.frontSetback;
         params.setbackSteps.front[1].inset = setbacksInMeters.frontSetback;
+
+        // Update or add custom setback types
+        Object.entries(customSetbacksInMeters).forEach(([name, value]) => {
+          if (!params.setbackSteps[name]) {
+            // Add new custom setback type
+            params.setbackSteps[name] = [
+              { inset: value, height: 0 },
+              { inset: value }
+            ];
+            // Initialize sideIndices for new custom type if not present
+            if (!params.sideIndices[name]) {
+              params.sideIndices[name] = [];
+            }
+          } else {
+            // Update existing custom setback type
+            params.setbackSteps[name][0].inset = value;
+            params.setbackSteps[name][1].inset = value;
+          }
+        });
+
+        // Remove custom setback types that are no longer defined
+        Object.keys(params.setbackSteps).forEach(key => {
+          if (!['rear', 'side', 'front'].includes(key) && !customSetbacksInMeters.hasOwnProperty(key)) {
+            delete params.setbackSteps[key];
+            delete params.sideIndices[key];
+          }
+        });
         
         await rpc.invoke('updateRawSection', [updatedEnvelope]);
         console.log('Building envelope updated successfully');
       } else {
         // Create new envelope
-        const envelopeFeature = createEnvelopeFeature(project, setbacksInMeters);
+        const customSetbacksInMeters = currentUnit === UNITS.FEET 
+          ? Object.fromEntries(Object.entries(customSetbacks).map(([key, value]) => [key, value * 0.3048]))
+          : customSetbacks;
+        const envelopeFeature = createEnvelopeFeature(project, setbacksInMeters, customSetbacksInMeters);
         await rpc.invoke('createRawSection', [envelopeFeature]);
         console.log('Building envelope created successfully');
       }
@@ -129,7 +164,7 @@ const SetbacksApp = () => {
     }
   };
 
-  const createEnvelopeFeature = (projectGeometry, setbackValues) => {
+  const createEnvelopeFeature = (projectGeometry, setbackValues, customSetbackValues = {}) => {
     const { maxHeight, frontSetback, sideSetback, rearSetback } = setbackValues;
     
     const envelopeFeature = {
@@ -148,7 +183,10 @@ const SetbacksApp = () => {
                 sideIndices: {
                   rear: [],
                   side: [0, 2],
-                  front: [1]
+                  front: [1],
+                  ...Object.fromEntries(
+                    Object.keys(customSetbackValues).map(name => [name, []])
+                  )
                 },
                 setbackSteps: {
                   rear: [
@@ -177,7 +215,21 @@ const SetbacksApp = () => {
                     {
                       inset: frontSetback
                     }
-                  ]
+                  ],
+                  ...Object.fromEntries(
+                    Object.entries(customSetbackValues).map(([name, value]) => [
+                      name,
+                      [
+                        {
+                          inset: value,
+                          height: 0
+                        },
+                        {
+                          inset: value
+                        }
+                      ]
+                    ])
+                  )
                 },
                 hasSetbackOutput: false
               }
