@@ -60,18 +60,24 @@ export const convertSetbacksUnits = (setbacks, fromUnit, toUnit) => {
   if (fromUnit === toUnit) {
     return setbacks;
   }
-  
+
   const convertedSetbacks = {};
-  
+  const dimensionlessFields = ['maxFAR', 'maxDensity', 'maxHeightStories']; // These don't need unit conversion
+
   Object.keys(setbacks).forEach(key => {
     const value = setbacks[key];
     if (typeof value === 'number') {
-      convertedSetbacks[key] = convertUnits(value, fromUnit, toUnit);
+      // Don't convert dimensionless parameters
+      if (dimensionlessFields.includes(key)) {
+        convertedSetbacks[key] = value;
+      } else {
+        convertedSetbacks[key] = convertUnits(value, fromUnit, toUnit);
+      }
     } else {
       convertedSetbacks[key] = value;
     }
   });
-  
+
   return convertedSetbacks;
 };
 

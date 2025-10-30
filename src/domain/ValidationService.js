@@ -1,0 +1,120 @@
+/**
+ * Validation Service
+ *
+ * Orchestrates design validation by coordinating between Giraffe analytics
+ * and validation rules. This service encapsulates the business logic for
+ * validating designs against zoning parameters.
+ */
+
+import { GiraffeAdapter } from './GiraffeAdapter';
+import { extractDesignMeasurements, hasValidAnalytics } from '../utils/measurementUtils';
+import { validateDesign } from '../utils/validators';
+import { VALIDATION_STATUS } from '../constants/validationRules';
+
+export class ValidationService {
+  /**
+   * Validate a design against zoning parameters
+   * @param {string} envelopeId - Envelope feature ID
+   * @param {Object} zoningParams - Zoning parameters to validate against
+   * @returns {Promise<Object>} Validation results
+   */
+  static async validateEnvelope(envelopeId, zoningParams) {
+    try {
+      // Get analytics from Giraffe
+      const analytics = await GiraffeAdapter.getAnalytics(envelopeId);
+
+      if (!hasValidAnalytics(analytics)) {
+        return {
+          status: VALIDATION_STATUS.UNKNOWN,
+          message: 'Analytics data not available',
+          results: null
+        };
+      }
+
+      // Extract measurements
+      const providedValues = extractDesignMeasurements(analytics);
+
+      // Perform validation
+      const validationResults = validateDesign(providedValues, zoningParams);
+
+      return {
+        status: validationResults.overallStatus,
+        isCompliant: validationResults.isCompliant,
+        hasBreaches: validationResults.hasBreaches,
+        breachCount: validationResults.breachCount,
+        results: validationResults.results,
+        providedValues,
+        zoningParams
+      };
+    } catch (error) {
+      console.error('Error validating envelope:', error);
+      return {
+        status: VALIDATION_STATUS.UNKNOWN,
+        message: `Validation error: ${error.message}`,
+        results: null
+      };
+    }
+  }
+
+  /**
+   * Get validation summary for display
+   * @param {Object} validationResults - Results from validateEnvelope
+   * @returns {Object} Summary for UI display
+   */
+  static getValidationSummary(validationResults) {
+    if (!validationResults || !validationResults.results) {
+      return {
+        title: 'Validation Unavailable',
+        message: 'No validation data available',
+        color: 'gray'
+      };
+    }
+
+    const { isCompliant, hasBreaches, breachCount } = validationResults;
+
+    if (isCompliant) {
+      return {
+        title: 'Design Compliant',
+        message: 'All parameters meet zoning requirements',
+        color: 'green'
+      };
+    }
+
+    if (hasBreaches) {
+      return {
+        title: 'Design Non-Compliant',
+        message: `${breachCount} parameter${breachCount > 1 ? 's' : ''} exceed zoning limits`,
+        color: 'red'
+      };
+    }
+
+    return {
+      title: 'Validation Incomplete',
+      message: 'Some validation data unavailable',
+      color: 'yellow'
+    };
+  }
+
+  /**
+   * Get breaches only from validation results
+   * @param {Object} validationResults - Results from validateEnvelope
+   * @returns {Array} Array of breach objects
+   */
+  static getBreaches(validationResults) {
+    if (!validationResults || !validationResults.results) {
+      return [];
+    }
+
+    return Object.values(validationResults.results)
+      .filter(result => result.status === VALIDATION_STATUS.BREACH);
+  }
+
+  /**
+   * Check if validation is needed (envelope exists and has analytics)
+   * @param {Object} envelope - Envelope feature
+   * @returns {boolean} True if validation can be performed
+   */
+  static canValidate(envelope) {
+    return !!(envelope && envelope.properties?.id);
+  }
+}

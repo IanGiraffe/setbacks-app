@@ -1,0 +1,237 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "strokeWidth": 2,
+          "stroke": "black",
+          "strokeOpacity": 0.3,
+          "fillOpacity": 0,
+          "strokeDasharray": [
+            1,
+            4,
+            4,
+            4
+          ],
+          "usage": "reference",
+          "type": "reference",
+          "ix": 0,
+          "id": "TA3w0lDjdzeFI4XV2hamX",
+          "layerId": "default",
+          "appId": "1",
+          "length": 53.489772712401006,
+          "_layerOpacity": 1,
+          "_fillOpacity": 0,
+          "_strokeOpacity": 0.3,
+          "_baseHeight": 0,
+          "_height": 0,
+          "_baseElevation": 0
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -97.74650496,
+              30.26217834
+            ],
+            [
+              -97.74643193,
+              30.26170001
+            ]
+          ]
+        },
+        "_projected": [
+          [
+            -51.57466905893058,
+            35.85965414159
+          ],
+          [
+            -44.54709839467253,
+            -17.166462399065495
+          ]
+        ],
+        "_path": ".children[0]",
+        "_display2dOutline": {
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [...coordinates...]
+                ]
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#fbad27",
+          "stroke": "#704a07",
+          "hardCost": 2000,
+          "softCost": 200,
+          "efficiency": 0.8,
+          "dwellingMix": [
+            {
+              "key": "studio",
+              "value": 0.20400000000000001
+            },
+            {
+              "key": "1 bed",
+              "value": 0.34600000000000003
+            },
+            {
+              "key": "2 bed",
+              "value": 0.37
+            },
+            {
+              "key": "3 bed",
+              "value": 0.07999999999999996
+            }
+          ],
+          "strokeWidth": 1,
+          "dwellingSize": [
+            {
+              "key": "studio",
+              "value": 45
+            },
+            {
+              "key": "1 bed",
+              "value": 60
+            },
+            {
+              "key": "2 bed",
+              "value": 70
+            },
+            {
+              "key": "3 bed",
+              "value": 85
+            }
+          ],
+          "floorToFloor": 3.2,
+          "dwellingPrice": [
+            {
+              "key": "studio",
+              "value": 600
+            },
+            {
+              "key": "1 bed",
+              "value": 1400
+            },
+            {
+              "key": "2 bed",
+              "value": 1800
+            },
+            {
+              "key": "3 bed",
+              "value": 2600
+            }
+          ],
+          "sellEfficiency": 0.72,
+          "dwellingResidents": [
+            {
+              "key": "studio",
+              "value": 1
+            },
+            {
+              "key": "1 bed",
+              "value": 1.5
+            },
+            {
+              "key": "2 bed",
+              "value": 2
+            },
+            {
+              "key": "3 bed",
+              "value": 3
+            }
+          ],
+          "dwellingParkingRequired": [
+            {
+              "key": "studio",
+              "value": 1
+            },
+            {
+              "key": "1 bed",
+              "value": 1
+            },
+            {
+              "key": "2 bed",
+              "value": 1.5
+            },
+            {
+              "key": "3 bed",
+              "value": 2
+            }
+          ],
+          "salePrice": 8000,
+          "netRent": 600,
+          "facadeCost": 150,
+          "levels": 4,
+          "usage": "Residential",
+          "offset": 9.144000000000343,
+          "offsetSide": "both",
+          "stackOrder": 0,
+          "id": "TA3w0lDjdzeFI4XV2hamX",
+          "projectId": "63860",
+          "appId": "1",
+          "public": true,
+          "layerId": "default",
+          "ix": 1,
+          "perimeter": 143.55553602033086,
+          "area": 978.2209431618002,
+          "grossArea": 3912.8837726472007,
+          "grossBuildingArea": 3912.8837726472007,
+          "netArea": 3130.307018117761,
+          "saleableArea": 2817.2763163059844,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "dwelling-studio-Count": 9.17503781172447,
+          "dwelling-1 bed-Count": 15.561583739493464,
+          "dwelling-2 bed-Count": 16.640999952637518,
+          "dwelling-3 bed-Count": 3.598054043813516,
+          "dwelling-studio-PricePer": 600,
+          "dwelling-1 bed-PricePer": 1400,
+          "dwelling-2 bed-PricePer": 1800,
+          "dwelling-3 bed-PricePer": 2600,
+          "dwellingTotalPrice": 66599.9803509882,
+          "dwelling-studio-ResidentsPer": 1,
+          "dwelling-1 bed-ResidentsPer": 1.5,
+          "dwelling-2 bed-ResidentsPer": 2,
+          "dwelling-3 bed-ResidentsPer": 3,
+          "dwellingTotalResidents": 76.59357545768025,
+          "dwelling-studio-ParkingRequiredPer": 1,
+          "dwelling-1 bed-ParkingRequiredPer": 1,
+          "dwelling-2 bed-ParkingRequiredPer": 1.5,
+          "dwelling-3 bed-ParkingRequiredPer": 2,
+          "dwellingTotalParkingRequired": 56.89422956780125,
+          "dwellingTotalCount": 44.97567554766897,
+          "_buildingID": "TA3w0lDjdzeFI4XV2hamX",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0,
+          "_isTopOfStack": true
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [...coordinates...]
+            ]
+          ]
+        },
+        "_projected": [
+          [
+            [...coordinates...]
+          ]
+        ],
+        "_path": ".children[1].children[0]"
+      }
+    ]
+  }

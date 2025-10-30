@@ -1,0 +1,1412 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#1c426d",
+          "stroke": "#6a6a6a",
+          "hardCost": 50,
+          "efficiency": 0,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Core",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "apartmentIndex": 0,
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeightDatum": "0",
+          "ix": 0,
+          "perimeter": 22.408220253311804,
+          "area": 23.167496661004407,
+          "grossArea": 92.66998664401763,
+          "grossBuildingArea": 92.66998664401763,
+          "netArea": 0,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0,
+          "_isTopOfStack": true
+        },
+        "_projected": [
+          [
+            [
+              44.9120170972791,
+              115.54721357487142
+            ],
+            [
+              47.409147800369155,
+              114.42969912663102
+            ],
+            [
+              50.86829820842768,
+              122.15930898673832
+            ],
+            [
+              48.371167504633405,
+              123.27682343311608
+            ],
+            [
+              44.9120170972791,
+              115.54721357487142
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74550230482369,
+                30.262897174143365
+              ],
+              [
+                -97.74547635548272,
+                30.262887093338026
+              ],
+              [
+                -97.7454404087176,
+                30.262956819327613
+              ],
+              [
+                -97.74546635807323,
+                30.26296690013995
+              ],
+              [
+                -97.74550230482369,
+                30.262897174143365
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#1c426d",
+          "stroke": "#6a6a6a",
+          "hardCost": 50,
+          "efficiency": 0,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Core",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "apartmentIndex": 3,
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeightDatum": "3",
+          "ix": 1,
+          "perimeter": 23.471562951971784,
+          "area": 24.622033288780585,
+          "grossArea": 98.48813315512234,
+          "grossBuildingArea": 98.48813315512234,
+          "netArea": 0,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0
+        },
+        "_projected": [
+          [
+            [
+              46.592186025063896,
+              112.60416538082063
+            ],
+            [
+              44.0950553217623,
+              113.72167982906103
+            ],
+            [
+              40.41872732913516,
+              105.5067779738456
+            ],
+            [
+              42.91585803216368,
+              104.38926352746785
+            ],
+            [
+              46.592186025063896,
+              112.60416538082063
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74548484517064,
+                30.26287062586278
+              ],
+              [
+                -97.74551079450814,
+                30.26288070666648
+              ],
+              [
+                -97.74554899805314,
+                30.262806603013157
+              ],
+              [
+                -97.74552304873121,
+                30.26279652221694
+              ],
+              [
+                -97.74548484517064,
+                30.26287062586278
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#f2897d",
+          "stroke": "#704a07",
+          "netRent": 600,
+          "hardCost": 2000,
+          "softCost": 200,
+          "salePrice": 3000,
+          "efficiency": 1,
+          "facadeCost": 0,
+          "dwellingMix": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "dwellingCount": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "dwellingPrice": [
+            {
+              "key": "2 bed",
+              "value": 1800
+            }
+          ],
+          "sellEfficiency": 1,
+          "dwellingResidents": [
+            {
+              "key": "2 bed",
+              "value": 2
+            }
+          ],
+          "dwellingCountPerLevel": true,
+          "dwellingParkingRequired": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "usage": "2 Bedroom",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "apartmentIndex": 1,
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeightDatum": "1",
+          "ix": 2,
+          "perimeter": 44.93558936782302,
+          "area": 109.61928589883269,
+          "grossArea": 438.47714359533074,
+          "grossBuildingArea": 438.47714359533074,
+          "netArea": 438.47714359533074,
+          "saleableArea": 438.47714359533074,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "dwelling-2 bed-Count": 4,
+          "dwelling-2 bed-PricePer": 1800,
+          "dwellingTotalPrice": 7200,
+          "dwelling-2 bed-ResidentsPer": 2,
+          "dwellingTotalResidents": 8,
+          "dwelling-2 bed-ParkingRequiredPer": 1,
+          "dwellingTotalParkingRequired": 4,
+          "dwellingTotalCount": 4,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0
+        },
+        "_projected": [
+          [
+            [
+              43.08599999987009,
+              116.36399994045496
+            ],
+            [
+              44.91200000001108,
+              115.54699994251132
+            ],
+            [
+              48.371000000194734,
+              123.2759999409318
+            ],
+            [
+              46.544999999648276,
+              124.09299994073808
+            ],
+            [
+              43.80694000010984,
+              125.31834994256496
+            ],
+            [
+              43.39877000030528,
+              124.40627994015813
+            ],
+            [
+              41.57322999956352,
+              125.22323994152248
+            ],
+            [
+              41.98139999983294,
+              126.13531994074583
+            ],
+            [
+              37.41700000055524,
+              128.17799994163215
+            ],
+            [
+              33.5499899995667,
+              119.53599994257092
+            ],
+            [
+              42.67799999965262,
+              115.45099993981421
+            ],
+            [
+              43.08599999987009,
+              116.36399994045496
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74552128018153,
+                30.26290454215615
+              ],
+              [
+                -97.74550230500137,
+                30.262897172216253
+              ],
+              [
+                -97.74546635981392,
+                30.26296689271152
+              ],
+              [
+                -97.74548533500482,
+                30.262974262656545
+              ],
+              [
+                -97.74551378802828,
+                30.26298531621582
+              ],
+              [
+                -97.74551802964301,
+                30.26297708876342
+              ],
+              [
+                -97.74553700005956,
+                30.262984458340124
+              ],
+              [
+                -97.74553275844607,
+                30.262992685883333
+              ],
+              [
+                -97.74558019021838,
+                30.263011112340344
+              ],
+              [
+                -97.7456203752832,
+                30.26293315596932
+              ],
+              [
+                -97.74552552002562,
+                30.26289630631421
+              ],
+              [
+                -97.74552128018153,
+                30.26290454215615
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#f2897d",
+          "stroke": "#704a07",
+          "netRent": 600,
+          "hardCost": 2000,
+          "softCost": 200,
+          "salePrice": 3000,
+          "efficiency": 1,
+          "facadeCost": 0,
+          "dwellingMix": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "dwellingCount": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "dwellingPrice": [
+            {
+              "key": "2 bed",
+              "value": 1800
+            }
+          ],
+          "sellEfficiency": 1,
+          "dwellingResidents": [
+            {
+              "key": "2 bed",
+              "value": 2
+            }
+          ],
+          "dwellingCountPerLevel": true,
+          "dwellingParkingRequired": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "usage": "2 Bedroom",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "apartmentIndex": 2,
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeightDatum": "2",
+          "ix": 3,
+          "perimeter": 46.00375895148949,
+          "area": 116.00405846805484,
+          "grossArea": 464.01623387221935,
+          "grossBuildingArea": 464.01623387221935,
+          "netArea": 464.01623387221935,
+          "saleableArea": 464.01623387221935,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "dwelling-2 bed-Count": 4,
+          "dwelling-2 bed-PricePer": 1800,
+          "dwellingTotalPrice": 7200,
+          "dwelling-2 bed-ResidentsPer": 2,
+          "dwellingTotalResidents": 8,
+          "dwelling-2 bed-ParkingRequiredPer": 1,
+          "dwellingTotalParkingRequired": 4,
+          "dwellingTotalCount": 4,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0
+        },
+        "_projected": [
+          [
+            [
+              44.09499999976378,
+              113.72099994309247
+            ],
+            [
+              42.26899999828202,
+              114.5379999410361
+            ],
+            [
+              42.67799999965262,
+              115.45099993981421
+            ],
+            [
+              33.5499899995667,
+              119.53599994257092
+            ],
+            [
+              29.46500000057995,
+              110.40799994021654
+            ],
+            [
+              34.029049999799014,
+              108.36547994427383
+            ],
+            [
+              34.43791000047023,
+              109.2790899425745
+            ],
+            [
+              36.2634499997814,
+              108.4621299430728
+            ],
+            [
+              35.85458999985141,
+              107.54850994236767
+            ],
+            [
+              38.59300000042022,
+              106.32299993932247
+            ],
+            [
+              40.41800000029905,
+              105.50599994137883
+            ],
+            [
+              44.09499999976378,
+              113.72099994309247
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74551079508305,
+                30.26288070053347
+              ],
+              [
+                -97.7455297702607,
+                30.262888070472144
+              ],
+              [
+                -97.74552552002562,
+                30.26289630631421
+              ],
+              [
+                -97.7456203752832,
+                30.26293315596932
+              ],
+              [
+                -97.74566282547626,
+                30.262850815552866
+              ],
+              [
+                -97.74561539740264,
+                30.262832390568658
+              ],
+              [
+                -97.74561114863194,
+                30.262840631916188
+              ],
+              [
+                -97.74559217823752,
+                30.26283326235007
+              ],
+              [
+                -97.74559642700949,
+                30.262825020912935
+              ],
+              [
+                -97.7455679703859,
+                30.26281396592805
+              ],
+              [
+                -97.74554900561134,
+                30.26280659599483
+              ],
+              [
+                -97.74551079508305,
+                30.26288070053347
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#f2897d",
+          "stroke": "#704a07",
+          "netRent": 600,
+          "hardCost": 2000,
+          "softCost": 200,
+          "salePrice": 3000,
+          "efficiency": 1,
+          "facadeCost": 0,
+          "dwellingMix": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "dwellingCount": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "dwellingPrice": [
+            {
+              "key": "2 bed",
+              "value": 1800
+            }
+          ],
+          "sellEfficiency": 1,
+          "dwellingResidents": [
+            {
+              "key": "2 bed",
+              "value": 2
+            }
+          ],
+          "dwellingCountPerLevel": true,
+          "dwellingParkingRequired": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "usage": "2 Bedroom",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "apartmentIndex": 4,
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeightDatum": "4",
+          "ix": 4,
+          "perimeter": 46.00053902800512,
+          "area": 115.9970162467148,
+          "grossArea": 463.9880649868592,
+          "grossBuildingArea": 463.9880649868592,
+          "netArea": 463.9880649868592,
+          "saleableArea": 463.9880649868592,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "dwelling-2 bed-Count": 4,
+          "dwelling-2 bed-PricePer": 1800,
+          "dwellingTotalPrice": 7200,
+          "dwelling-2 bed-ResidentsPer": 2,
+          "dwellingTotalResidents": 8,
+          "dwelling-2 bed-ParkingRequiredPer": 1,
+          "dwellingTotalParkingRequired": 4,
+          "dwellingTotalCount": 4,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0
+        },
+        "_projected": [
+          [
+            [
+              57.953000000481346,
+              108.61499994248152
+            ],
+            [
+              48.82600000011801,
+              112.69899994134903
+            ],
+            [
+              48.417000000478474,
+              111.78699994273484
+            ],
+            [
+              46.59200000044747,
+              112.60399994254112
+            ],
+            [
+              42.914999998289645,
+              104.38899994269013
+            ],
+            [
+              44.740999999728196,
+              103.57199994288385
+            ],
+            [
+              47.47951000017632,
+              102.34644993953407
+            ],
+            [
+              47.88825000057025,
+              103.25979994237423
+            ],
+            [
+              49.71377999973845,
+              102.44283994287252
+            ],
+            [
+              49.30504000006231,
+              101.5294799413532
+            ],
+            [
+              53.869000000146904,
+              99.48699994385242
+            ],
+            [
+              57.953000000481346,
+              108.61499994248152
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74536678744174,
+                30.262834640494898
+              ],
+              [
+                -97.74546163208522,
+                30.262871481244606
+              ],
+              [
+                -97.7454658823245,
+                30.262863254425252
+              ],
+              [
+                -97.74548484710375,
+                30.26287062437043
+              ],
+              [
+                -97.74552305764763,
+                30.262796519839274
+              ],
+              [
+                -97.74550408248808,
+                30.2627891498995
+              ],
+              [
+                -97.74547562484602,
+                30.262778094533633
+              ],
+              [
+                -97.74547137731298,
+                30.262786333531334
+              ],
+              [
+                -97.74545240704336,
+                30.26277896394491
+              ],
+              [
+                -97.74545665457765,
+                30.26277072485761
+              ],
+              [
+                -97.74540922751626,
+                30.26275230015937
+              ],
+              [
+                -97.74536678744174,
+                30.262834640494898
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#f2897d",
+          "stroke": "#704a07",
+          "netRent": 600,
+          "hardCost": 2000,
+          "softCost": 200,
+          "salePrice": 3000,
+          "efficiency": 1,
+          "facadeCost": 0,
+          "dwellingMix": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "dwellingCount": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "dwellingPrice": [
+            {
+              "key": "2 bed",
+              "value": 1800
+            }
+          ],
+          "sellEfficiency": 1,
+          "dwellingResidents": [
+            {
+              "key": "2 bed",
+              "value": 2
+            }
+          ],
+          "dwellingCountPerLevel": true,
+          "dwellingParkingRequired": [
+            {
+              "key": "2 bed",
+              "value": 1
+            }
+          ],
+          "usage": "2 Bedroom",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "apartmentIndex": 5,
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeightDatum": "5",
+          "ix": 5,
+          "perimeter": 44.93433654242764,
+          "area": 109.61753338961171,
+          "grossArea": 438.47013355844683,
+          "grossBuildingArea": 438.47013355844683,
+          "netArea": 438.47013355844683,
+          "saleableArea": 438.47013355844683,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "dwelling-2 bed-Count": 4,
+          "dwelling-2 bed-PricePer": 1800,
+          "dwellingTotalPrice": 7200,
+          "dwelling-2 bed-ResidentsPer": 2,
+          "dwellingTotalResidents": 8,
+          "dwelling-2 bed-ParkingRequiredPer": 1,
+          "dwellingTotalParkingRequired": 4,
+          "dwellingTotalCount": 4,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0
+        },
+        "_projected": [
+          [
+            [
+              61.82099999977519,
+              117.2569999396801
+            ],
+            [
+              57.25738999965221,
+              119.2993299420923
+            ],
+            [
+              56.84910000019348,
+              118.3869899418205
+            ],
+            [
+              55.02356999957191,
+              119.20394994132221
+            ],
+            [
+              55.43185999956867,
+              120.11628993786871
+            ],
+            [
+              52.69299999882756,
+              121.34199994057417
+            ],
+            [
+              50.86800000008123,
+              122.1589999422431
+            ],
+            [
+              47.408999999800294,
+              114.42899993993342
+            ],
+            [
+              49.23400000004879,
+              113.61199994012713
+            ],
+            [
+              48.82600000011801,
+              112.69899994134903
+            ],
+            [
+              57.953000000481346,
+              108.61499994248152
+            ],
+            [
+              61.82099999977519,
+              117.2569999396801
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74532659192897,
+                30.262912596789207
+              ],
+              [
+                -97.7453740154149,
+                30.26293102016385
+              ],
+              [
+                -97.74537825828595,
+                30.262922790280324
+              ],
+              [
+                -97.7453972285777,
+                30.262930159877357
+              ],
+              [
+                -97.7453929857079,
+                30.26293838976143
+              ],
+              [
+                -97.74542144702401,
+                30.262949446588305
+              ],
+              [
+                -97.7454404118165,
+                30.262956816539845
+              ],
+              [
+                -97.74547635701865,
+                30.262887087030908
+              ],
+              [
+                -97.74545739223687,
+                30.26287971708451
+              ],
+              [
+                -97.74546163208522,
+                30.262871481244606
+              ],
+              [
+                -97.74536678744174,
+                30.262834640494898
+              ],
+              [
+                -97.74532659192897,
+                30.262912596789207
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "type": "buildingSection",
+          "color": "#f0ede3",
+          "stroke": "#8f7941",
+          "hardCost": 50,
+          "efficiency": 1,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Corridor",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "ix": 6,
+          "perimeter": 17.471569684538768,
+          "area": 13.47159329806209,
+          "grossArea": 53.88637319224836,
+          "grossBuildingArea": 53.88637319224836,
+          "netArea": 53.88637319224836,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_isBaseSection": true,
+          "_height": 12.8,
+          "_baseHeight": 0,
+          "_baseElevation": 0,
+          "_stackOrder": 0
+        },
+        "_projected": [
+          [
+            [
+              49.23467999885515,
+              113.61273994296789
+            ],
+            [
+              43.086479999651736,
+              116.36416994407773
+            ],
+            [
+              42.26952000060646,
+              114.53862993977964
+            ],
+            [
+              48.41771999873492,
+              111.78719994053245
+            ],
+            [
+              49.23467999885515,
+              113.61273994296789
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.7454573851705,
+                30.26287972375978
+              ],
+              [
+                -97.74552127519352,
+                30.262904543689675
+              ],
+              [
+                -97.74552976485698,
+                30.262888076155132
+              ],
+              [
+                -97.7454658748425,
+                30.262863256229338
+              ],
+              [
+                -97.7454573851705,
+                30.26287972375978
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "jobs": 0.033333,
+          "type": "buildingSection",
+          "color": "#fff9f3",
+          "stroke": "#b0b0ab",
+          "hardCost": 0,
+          "noFacade": true,
+          "softCost": 0,
+          "efficiency": 0,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Balcony",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "apartmentIndex": 1,
+          "_baseHeightRef": "1",
+          "ix": 7,
+          "perimeter": 9.999999999730544,
+          "area": 5.999999998595285,
+          "grossArea": 23.99999999438114,
+          "grossBuildingArea": 23.99999999438114,
+          "netArea": 0,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeight": 0,
+          "_height": 12.8,
+          "_baseElevation": 0
+        },
+        "_projected": [
+          [
+            [
+              43.39885225205307,
+              124.4064610041678
+            ],
+            [
+              41.57331850733922,
+              125.22342277504504
+            ],
+            [
+              42.798761170883765,
+              127.96172339841723
+            ],
+            [
+              44.62429491625907,
+              127.14476162008941
+            ],
+            [
+              43.39885225205307,
+              124.4064610041678
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74551802878827,
+                30.26297709039671
+              ],
+              [
+                -97.7455369991398,
+                30.26298445998942
+              ],
+              [
+                -97.74552426460522,
+                30.263009161206686
+              ],
+              [
+                -97.7455052942499,
+                30.263001791612158
+              ],
+              [
+                -97.74551802878827,
+                30.26297709039671
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "jobs": 0.033333,
+          "type": "buildingSection",
+          "color": "#fff9f3",
+          "stroke": "#b0b0ab",
+          "hardCost": 0,
+          "noFacade": true,
+          "softCost": 0,
+          "efficiency": 0,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Balcony",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "apartmentIndex": 2,
+          "_baseHeightRef": "2",
+          "ix": 8,
+          "perimeter": 9.999999999141675,
+          "area": 5.9999999991271125,
+          "grossArea": 23.99999999650845,
+          "grossBuildingArea": 23.99999999650845,
+          "netArea": 0,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeight": 0,
+          "_height": 12.8,
+          "_baseElevation": 0
+        },
+        "_projected": [
+          [
+            [
+              34.437840107459174,
+              109.2789110597223
+            ],
+            [
+              36.26337385322923,
+              108.46194928511977
+            ],
+            [
+              35.03793118832567,
+              105.72364866547287
+            ],
+            [
+              33.21239744321766,
+              106.54061044380069
+            ],
+            [
+              34.437840107459174,
+              109.2789110597223
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74561114935825,
+                30.262840630302552
+              ],
+              [
+                -97.74559217902882,
+                30.262833260720416
+              ],
+              [
+                -97.7456049135237,
+                30.262808559495888
+              ],
+              [
+                -97.74562388384933,
+                30.262815929076215
+              ],
+              [
+                -97.74561114935825,
+                30.262840630302552
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "jobs": 0.033333,
+          "type": "buildingSection",
+          "color": "#fff9f3",
+          "stroke": "#b0b0ab",
+          "hardCost": 0,
+          "noFacade": true,
+          "softCost": 0,
+          "efficiency": 0,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Balcony",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "apartmentIndex": 4,
+          "_baseHeightRef": "4",
+          "ix": 9,
+          "perimeter": 9.999999995439195,
+          "area": 5.9999999938290784,
+          "grossArea": 23.999999975316314,
+          "grossBuildingArea": 23.999999975316314,
+          "netArea": 0,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeight": 0,
+          "_height": 12.8,
+          "_baseElevation": 0
+        },
+        "_projected": [
+          [
+            [
+              47.88817328485876,
+              103.25962595641613
+            ],
+            [
+              49.71370702910259,
+              102.4426641818136
+            ],
+            [
+              48.48826436543567,
+              99.70436356402934
+            ],
+            [
+              46.66273062063103,
+              100.52132533863187
+            ],
+            [
+              47.88817328485876,
+              103.25962595641613
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.7454713781102,
+                30.26278633196187
+              ],
+              [
+                -97.74545240780165,
+                30.26277896235944
+              ],
+              [
+                -97.7454651423245,
+                30.26275426114831
+              ],
+              [
+                -97.74548411262926,
+                30.26276163074892
+              ],
+              [
+                -97.7454713781102,
+                30.26278633196187
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "jobs": 0.033333,
+          "type": "buildingSection",
+          "color": "#fff9f3",
+          "stroke": "#b0b0ab",
+          "hardCost": 0,
+          "noFacade": true,
+          "softCost": 0,
+          "efficiency": 0,
+          "facadeCost": 0,
+          "strokeWidth": 2,
+          "floorToFloor": 3.2,
+          "sellEfficiency": 0,
+          "usage": "Balcony",
+          "id": "4GIZOMzQ9YbEDADJc7Ud_",
+          "appId": "1",
+          "levels": 4,
+          "public": true,
+          "projectId": "63860",
+          "stackOrder": 0,
+          "layerId": "default",
+          "buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "apartmentIndex": 5,
+          "_baseHeightRef": "5",
+          "ix": 10,
+          "perimeter": 10.000000005529591,
+          "area": 6.000000005600214,
+          "grossArea": 24.000000022400855,
+          "grossBuildingArea": 24.000000022400855,
+          "netArea": 0,
+          "saleableArea": 0,
+          "_layerOpacity": 1,
+          "_fillOpacity": 1,
+          "_strokeOpacity": 1,
+          "_buildingID": "4GIZOMzQ9YbEDADJc7Ud_",
+          "_baseHeight": 0,
+          "_height": 12.8,
+          "_baseElevation": 0
+        },
+        "_projected": [
+          [
+            [
+              56.84918542994075,
+              118.38717589899898
+            ],
+            [
+              55.023651683072146,
+              119.20413766987622
+            ],
+            [
+              56.249094346598305,
+              121.94243829324841
+            ],
+            [
+              58.07462809412978,
+              121.12547651864588
+            ],
+            [
+              56.84918542994075,
+              118.38717589899898
+            ]
+          ]
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -97.74537825739819,
+                30.2629227919578
+              ],
+              [
+                -97.74539722772886,
+                30.262930161570786
+              ],
+              [
+                -97.74538449316631,
+                30.262954862774695
+              ],
+              [
+                -97.74536552283183,
+                30.262947493159864
+              ],
+              [
+                -97.74537825739819,
+                30.2629227919578
+              ]
+            ]
+          ]
+        }
+      }
+    ]
+  }
