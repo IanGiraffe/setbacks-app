@@ -1,4 +1,9 @@
-here is the annotated dir: `src\README.md`  
-here is a link to the SDK docs: `https://gi-docs.web.app/index.html`
+@ARCHITECTURE.md @QUICK_START.md @
 
-Keep the code modular, stick to best software development practices: SOLID, KISS, YAGNI
+Keep our code modular and clean. Lets create a module that saves the zoning parameters in 
+ a profile in case the user wants to use that same setup. They can save it and give it a name. 
+
+
+@ARCHITECTURE.md @QUICK_START.md @
+
+Keep our code modular and clean. I don't like the user experience of having to select the envelope in order to see the validations. Lets instead show the validation for the curre
