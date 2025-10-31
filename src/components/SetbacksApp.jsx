@@ -22,13 +22,14 @@ const SetbacksApp = () => {
   // Default values from configuration (in feet)
   const [setbacks, setSetbacks] = useState(getDefaultParameters());
 
-  // Validation hook - convert setbacks to meters for validation
-  const setbacksInMeters = currentUnit === UNITS.FEET
-    ? convertSetbacksUnits(setbacks, UNITS.FEET, UNITS.METERS)
+  // Validation hook - validate in feet (Giraffe analytics are in feet)
+  // Convert to feet if current unit is meters
+  const setbacksInFeet = currentUnit === UNITS.METERS
+    ? convertSetbacksUnits(setbacks, UNITS.METERS, UNITS.FEET)
     : setbacks;
   const { validationResults, isValidating, validate } = useValidation(
     selectedEnvelope,
-    setbacksInMeters
+    setbacksInFeet
   );
 
   const hasProjectBoundary = project && project.geometry;

@@ -1,19 +1,8 @@
 /**
  * Validation Utilities
  *
- * ============================================================================
- * STATUS: LOGIC IS GOOD - Just needs real data from Giraffe SDK
- * ============================================================================
- *
  * Pure validation functions for design compliance checking.
- * These functions are stateless and can be easily unit tested.
- *
- * These validation functions are well-designed and will work correctly
- * ONCE they receive real measurement data from Giraffe analytics.
- *
- * The logic here is sound - the only missing piece is getting actual
- * measurements from the Giraffe SDK (see measurementUtils.js).
- * ============================================================================
+ * All measurements are expected in FEET (Giraffe analytics returns feet).
  */
 
 import {
