@@ -92,12 +92,12 @@ export class GiraffeAdapter {
 
   /**
    * Get analytics/measures from Giraffe
-   * @param {string} featureId - Feature ID to get analytics for
-   * @returns {Promise<Object>} Analytics data
+   * @returns {Promise<Object>} Analytics data with rows of measures
    */
-  static async getAnalytics(featureId) {
+  static async getAnalytics() {
     try {
-      const result = await rpc.invoke('getAnalytics', [featureId]);
+      const result = await rpc.invoke('getAnalyticsResult', []);
+      console.log('Analytics response:', result);
       return result;
     } catch (error) {
       console.error('Error getting analytics:', error);

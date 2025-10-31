@@ -1,648 +1,141 @@
-/* Path: grouped.K0I_yyTNa7OEta5Tfpv8P.usages */
+/* Path: grouped.K0I_yyTNa7OEta5Tfpv8P.usages.__COMBINED.rows */
 
-[
-    {
-        "usages": {},
-        "columns": [
-            {
-                "value": 0.2691949493641186,
-                "groupKey": "__COMBINED",
-                "solvedFeatures": [],
-                "globalComponents": [
-                    {
-                        "pronumeral": "A",
-                        "label": "building total area (ft²)",
-                        "value": 29621.03818819646
-                    },
-                    {
-                        "pronumeral": "B",
-                        "label": "site total area (ft²)",
-                        "value": 110035.6387003771
-                    }
-                ],
-                "missing": []
-            }
-        ],
-        "measure": {
-            "appliedToUsages": [],
-            "name": "FAR",
-            "unitId": "F7nBZiSYTNFlpHtE4D5PC",
-            "categoryId": "K0I_yyTNa7OEta5Tfpv8P",
-            "detail": "",
-            "tags": [],
-            "formula": "A/B",
-            "operation": "SUM",
-            "components": [
-                {
-                    "subType": "site",
-                    "type": "site",
-                    "siteKey": "FEET_2__building"
-                },
-                {
-                    "subType": "site",
-                    "type": "site",
-                    "siteKey": "FEET_2__site"
-                }
-            ],
-            "isBold": false,
-            "isHidden": false,
-            "precision": 2,
-            "id": "61EgiM3L61qgHu5vPmjnx"
-        }
-    },
-    {
-        "usages": {},
-        "columns": [
-            {
-                "value": 41.9947506561664,
-                "groupKey": "__COMBINED",
-                "solvedFeatures": [
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-0",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-1",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-2",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-3",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-4",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-5",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-6",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-7",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-8",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-9",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-10",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-11",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-12",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-13",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-14",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-15",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-16",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-17",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-18",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-19",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-20",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-21",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-22",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-23",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-24",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-25",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-26",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-27",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-28",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-29",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-30",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-31",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-32",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-33",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-34",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-35",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-36",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-37",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-38",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-39",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "zv3y2E4MhDvcDn_nrKS6S-40",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    },
-                    {
-                        "featureId": "HK4-3FkqKh-1TrCYVYsSl-1",
-                        "quantity": null,
-                        "rate": null,
-                        "value": 41.9947506561664,
-                        "parsedComponents": [
-                            {
-                                "pronumeral": "A",
-                                "label": "height (ft)",
-                                "value": 41.9947506561664
-                            }
-                        ]
-                    }
-                ],
-                "globalComponents": [],
-                "missing": []
-            }
-        ],
-        "measure": {
-            "featureFilter": {
-                "operator": "and",
-                "filters": [
-                    {
-                        "property": "type",
-                        "filter": {
-                            "type": "select",
-                            "value": [
-                                "buildingSection"
-                            ],
-                            "operator": "is"
-                        }
-                    }
-                ]
-            },
-            "appliedToUsages": [],
-            "name": "Provided Max Height (ft)",
-            "unitId": "IMPERIAL_ONE",
-            "categoryId": "K0I_yyTNa7OEta5Tfpv8P",
-            "detail": "",
-            "tags": [],
-            "formula": "A",
-            "operation": "MAX",
-            "components": [
-                {
-                    "type": "rawProperty",
-                    "subType": "property",
-                    "id": "FEET_1___height"
-                }
-            ],
-            "isBold": false,
-            "isHidden": false,
-            "precision": 0,
-            "id": "T3xdB4-3onX-zWnAS7qPB"
-        }
-    }
-]
+rows
+: 
+Array(6)
+0
+: 
+columns
+: 
+Array(1)
+measure
+: 
+appliedToUsages
+: 
+[]
+categoryId
+: 
+"K0I_yyTNa7OEta5Tfpv8P"
+components
+: 
+Array(2)
+0
+: 
+{subType: 'site', type: 'site', siteKey: 'FEET_2__building'}
+1
+: 
+{subType: 'site', type: 'site', siteKey: 'FEET_2__site'}
+length
+: 
+2
+[[Prototype]]
+: 
+Array(0)
+detail
+: 
+""
+featureFilter
+: 
+undefined
+formula
+: 
+"A/B"
+id
+: 
+"61EgiM3L61qgHu5vPmjnx"
+isBold
+: 
+false
+isHidden
+: 
+false
+name
+: 
+"Provided FAR"
+operation
+: 
+"SUM"
+precision
+: 
+2
+tags
+: 
+[]
+unitId
+: 
+"F7nBZiSYTNFlpHtE4D5PC"
+[[Prototype]]
+: 
+Object
+usages
+: 
+Set(1) {'__COMBINED'}
+[[Prototype]]
+: 
+Object
+1
+: 
+columns
+: 
+Array(1)
+0
+: 
+{value: 94.4881889763744, groupKey: '__COMBINED', solvedFeatures: Array(42), globalComponents: Array(0), missing: Array(0), …}
+length
+: 
+1
+[[Prototype]]
+: 
+Array(0)
+measure
+: 
+appliedToUsages
+: 
+Array(0)
+categoryId
+: 
+"K0I_yyTNa7OEta5Tfpv8P"
+components
+: 
+Array(1)
+detail
+: 
+""
+featureFilter
+: 
+formula
+: 
+"A"
+id
+: 
+"T3xdB4-3onX-zWnAS7qPB"
+isBold
+: 
+false
+isHidden
+: 
+false
+name
+: 
+"Provided Max Height (ft)"
+operation
+: 
+"MAX"
+precision
+: 
+0
+tags
+: 
+[]
+unitId
+: 
+"IMPERIAL_ONE"
+[[Prototype]]
+: 
+Object
+usages
+: 
+Set(1)
+[[Prototype]]
+: 
+Object

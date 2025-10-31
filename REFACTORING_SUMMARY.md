@@ -1,28 +1,32 @@
 # Refactoring Summary
 
+## ⚠️ IMPORTANT: Implementation Status
+
+**PLEASE READ [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) FIRST** for details on what's fully implemented vs. what needs Giraffe SDK documentation.
+
 ## What Was Done
 
-Your Setbacks App has been professionally refactored following SOLID principles, KISS, and YAGNI. The codebase is now modular, maintainable, and ready for production.
+Your Setbacks App has been professionally refactored following SOLID principles, KISS, and YAGNI. The codebase is now modular, maintainable, and **production-ready for Steps 1-3**. Step 4 (validation) is provided as a **well-designed skeleton** that needs Giraffe SDK analytics documentation to complete.
 
 ## Files Created (13 new files)
 
 ### Domain Layer
-- ✅ `src/domain/GiraffeAdapter.js` - Isolates all Giraffe SDK interactions
-- ✅ `src/domain/ZoningService.js` - Zoning parameter business logic
-- ✅ `src/domain/ValidationService.js` - Design validation orchestration
+- ✅ `src/domain/GiraffeAdapter.js` - Isolates all Giraffe SDK interactions (envelope methods ✅, analytics ⚠️)
+- ✅ `src/domain/ZoningService.js` - Zoning parameter business logic **FULLY WORKING**
+- ⚠️ `src/domain/ValidationService.js` - Design validation orchestration **SKELETON**
 
 ### Custom Hooks
-- ✅ `src/hooks/useZoningData.js` - Zoning parameter state management
-- ✅ `src/hooks/useEnvelope.js` - Envelope operations
-- ✅ `src/hooks/useValidation.js` - Validation state management
+- ✅ `src/hooks/useZoningData.js` - Zoning parameter state management **FULLY WORKING**
+- ✅ `src/hooks/useEnvelope.js` - Envelope operations **FULLY WORKING**
+- ⚠️ `src/hooks/useValidation.js` - Validation state management **SKELETON**
 
 ### Utilities
-- ✅ `src/utils/validators.js` - Pure validation functions
-- ✅ `src/utils/measurementUtils.js` - Giraffe analytics extraction
+- ⚠️ `src/utils/validators.js` - Pure validation functions **LOGIC GOOD, needs real data**
+- ⚠️ `src/utils/measurementUtils.js` - Giraffe analytics extraction **SKELETON**
 
 ### Constants
-- ✅ `src/constants/validationRules.js` - Validation configuration
-- ✅ `src/constants/giraffeFlows.js` - Giraffe SDK constants
+- ⚠️ `src/constants/validationRules.js` - Validation configuration **SKELETON (measure names need verification)**
+- ✅ `src/constants/giraffeFlows.js` - Giraffe SDK constants **FULLY WORKING**
 
 ### API Layer (Future)
 - ✅ `src/services/api/APIClient.js` - Generic HTTP client

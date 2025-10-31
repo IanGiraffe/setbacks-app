@@ -14,14 +14,14 @@ import { VALIDATION_STATUS } from '../constants/validationRules';
 export class ValidationService {
   /**
    * Validate a design against zoning parameters
-   * @param {string} envelopeId - Envelope feature ID
+   * @param {string} envelopeId - Envelope feature ID (unused - analytics are project-wide)
    * @param {Object} zoningParams - Zoning parameters to validate against
    * @returns {Promise<Object>} Validation results
    */
   static async validateEnvelope(envelopeId, zoningParams) {
     try {
-      // Get analytics from Giraffe
-      const analytics = await GiraffeAdapter.getAnalytics(envelopeId);
+      // Get analytics from Giraffe (project-wide analytics)
+      const analytics = await GiraffeAdapter.getAnalytics();
 
       if (!hasValidAnalytics(analytics)) {
         return {

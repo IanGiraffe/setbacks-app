@@ -2,15 +2,16 @@
  * useValidation Hook
  *
  * Custom hook for managing design validation state.
- * Automatically validates designs when envelope changes.
+ * Validates designs on-demand rather than automatically to avoid rate limiting.
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { ValidationService } from '../domain/ValidationService';
 
 export const useValidation = (selectedEnvelope, zoningParams) => {
   const [validationResults, setValidationResults] = useState(null);
   const [isValidating, setIsValidating] = useState(false);
+  const envelopeIdRef = useRef(null);
 
   /**
    * Perform validation
@@ -18,6 +19,11 @@ export const useValidation = (selectedEnvelope, zoningParams) => {
   const validate = useCallback(async () => {
     if (!selectedEnvelope || !selectedEnvelope.properties?.id) {
       setValidationResults(null);
+      return;
+    }
+
+    // Prevent duplicate validations
+    if (isValidating) {
       return;
     }
 
@@ -37,18 +43,24 @@ export const useValidation = (selectedEnvelope, zoningParams) => {
     } finally {
       setIsValidating(false);
     }
-  }, [selectedEnvelope, zoningParams]);
+  }, [selectedEnvelope, zoningParams, isValidating]);
 
   /**
-   * Auto-validate when envelope or params change
+   * Auto-validate only when envelope ID changes (not on every param change)
    */
   useEffect(() => {
-    if (selectedEnvelope && ValidationService.canValidate(selectedEnvelope)) {
+    const currentEnvelopeId = selectedEnvelope?.properties?.id;
+
+    // Only validate if envelope changed, not if params changed
+    if (currentEnvelopeId && currentEnvelopeId !== envelopeIdRef.current) {
+      envelopeIdRef.current = currentEnvelopeId;
       validate();
-    } else {
+    } else if (!currentEnvelopeId) {
+      envelopeIdRef.current = null;
       setValidationResults(null);
     }
-  }, [selectedEnvelope, zoningParams, validate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedEnvelope?.properties?.id]);
 
   /**
    * Clear validation results

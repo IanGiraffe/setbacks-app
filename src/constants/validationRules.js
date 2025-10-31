@@ -22,11 +22,13 @@ export const VALIDATION_TYPES = {
 
 /**
  * Giraffe measure keys for analytics
- * These correspond to measures available in Giraffe's analytics system
+ * These match the measure names from rpc.invoke('getAnalyticsResult', [])
  */
 export const GIRAFFE_MEASURES = {
-  MAX_HEIGHT_FT: 'max provided height (ft)',
-  MAX_HEIGHT_STORIES: 'max provided height (stories)',
+  MAX_HEIGHT_FT: 'Provided Max Height (ft)',
+  MIN_HEIGHT_FT: 'Provided Min Height (ft)',
+  MAX_HEIGHT_STORIES: 'Provided Max Height (stories)',
+  MIN_HEIGHT_STORIES: 'Provided Min Height (stories)',
   PROVIDED_FAR: 'Provided FAR',
   PROVIDED_DENSITY: 'Provided Density'
 };
