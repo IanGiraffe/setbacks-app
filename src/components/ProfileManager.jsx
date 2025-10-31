@@ -2,32 +2,108 @@
  * ProfileManager Component
  *
  * UI component for managing zoning parameter profiles.
- * Allows users to save, load, delete, and compare parameter presets.
+ * Integrated into the form with a dropdown selector and smart save functionality.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProfiles } from '../hooks/useProfiles';
 import { cn } from '../utils/cn';
+import { ZONING_PARAMETERS, SETBACK_PARAMETERS } from '../config/zoningParameters';
 
-const ProfileManager = ({ currentParameters, currentUnit, onLoadProfile }) => {
+const ProfileManager = ({
+  currentParameters,
+  currentUnit,
+  onLoadProfile
+}) => {
   const {
     profiles,
-    isLoading,
-    error,
     saveProfile,
     deleteProfile,
     loadProfile,
+    updateProfile,
     compare
   } = useProfiles();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedProfileId, setSelectedProfileId] = useState('new');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showCompareDialog, setShowCompareDialog] = useState(false);
+  const [compareProfileId, setCompareProfileId] = useState(null);
+  const [comparisonResult, setComparisonResult] = useState(null);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [newProfileName, setNewProfileName] = useState('');
   const [saveError, setSaveError] = useState(null);
-  const [selectedProfileForCompare, setSelectedProfileForCompare] = useState(null);
-  const [comparisonResult, setComparisonResult] = useState(null);
 
-  const handleSaveProfile = async () => {
+  // Helper function to get formatted parameter label
+  const getParameterLabel = (paramKey) => {
+    const allParams = [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS];
+    const paramConfig = allParams.find(p => p.key === paramKey);
+
+    if (paramConfig) {
+      return paramConfig.label.toUpperCase();
+    }
+
+    // For custom setbacks, format the key (e.g., "customSetback" -> "CUSTOM SETBACK")
+    return paramKey
+      .replace(/([A-Z])/g, ' $1') // Add space before capitals
+      .trim()
+      .toUpperCase();
+  };
+
+  // Detect parameter changes
+  useEffect(() => {
+    if (selectedProfileId === 'new') {
+      setHasUnsavedChanges(false);
+      return;
+    }
+
+    const selectedProfile = profiles.find(p => p.id === selectedProfileId);
+    if (!selectedProfile) {
+      setHasUnsavedChanges(false);
+      return;
+    }
+
+    // Check if current parameters differ from selected profile
+    const isDifferent = Object.keys(currentParameters).some(
+      key => currentParameters[key] !== selectedProfile.parameters[key]
+    );
+
+    setHasUnsavedChanges(isDifferent);
+  }, [currentParameters, selectedProfileId, profiles]);
+
+  const handleProfileSelect = (profileId) => {
+    if (profileId === 'new') {
+      setSelectedProfileId('new');
+      setHasUnsavedChanges(false);
+      return;
+    }
+
+    const result = loadProfile(profileId);
+    if (result.success) {
+      setSelectedProfileId(profileId);
+      setHasUnsavedChanges(false);
+      onLoadProfile(result.parameters, result.unit);
+    }
+  };
+
+  const handleSaveEdits = async () => {
+    if (selectedProfileId === 'new') return;
+
+    const result = await updateProfile(selectedProfileId, {
+      parameters: currentParameters,
+      unit: currentUnit
+    });
+
+    if (result.success) {
+      setHasUnsavedChanges(false);
+    }
+  };
+
+  const handleSaveAsNew = async () => {
+    setShowSaveDialog(true);
+  };
+
+  const handleConfirmSaveNew = async () => {
     setSaveError(null);
 
     if (!newProfileName.trim()) {
@@ -40,244 +116,350 @@ const ProfileManager = ({ currentParameters, currentUnit, onLoadProfile }) => {
     if (result.success) {
       setNewProfileName('');
       setSaveError(null);
+      setShowSaveDialog(false);
+      setSelectedProfileId(result.profile.id);
+      setHasUnsavedChanges(false);
     } else {
       setSaveError(result.error);
     }
   };
 
-  const handleLoadProfile = (profileId) => {
-    const result = loadProfile(profileId);
-    if (result.success) {
-      onLoadProfile(result.parameters, result.unit);
-    }
-  };
+  const handleDelete = async () => {
+    if (selectedProfileId === 'new') return;
 
-  const handleDeleteProfile = async (profileId) => {
     if (window.confirm('Are you sure you want to delete this profile?')) {
-      await deleteProfile(profileId);
+      await deleteProfile(selectedProfileId);
+      setSelectedProfileId('new');
+      setHasUnsavedChanges(false);
     }
   };
 
-  const handleCompareProfiles = (profileId) => {
-    if (!selectedProfileForCompare) {
-      setSelectedProfileForCompare(profileId);
-      return;
-    }
+  const handleCompare = () => {
+    setShowCompareDialog(true);
+  };
 
-    if (selectedProfileForCompare === profileId) {
-      // Deselect if clicking the same profile
-      setSelectedProfileForCompare(null);
-      setComparisonResult(null);
-      return;
-    }
+  const handleConfirmCompare = () => {
+    if (!compareProfileId || selectedProfileId === 'new') return;
 
-    // Compare the two profiles
-    const result = compare(selectedProfileForCompare, profileId);
+    const result = compare(selectedProfileId, compareProfileId);
     if (result.success) {
       setComparisonResult(result.comparison);
     }
-
-    setSelectedProfileForCompare(null);
+    setShowCompareDialog(false);
   };
 
   return (
-    <div className="mt-4">
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-md shadow-md hover:from-blue-600 hover:to-blue-700 transition-all"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        {isOpen ? 'Close' : 'Manage Profiles'} ({profiles.length})
-      </motion.button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-3 bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden"
+    <>
+      {/* Profile Dropdown - appears above "Parameters" title */}
+      <div className="mb-2">
+        <div className="flex items-center gap-2">
+          <select
+            value={selectedProfileId}
+            onChange={(e) => handleProfileSelect(e.target.value)}
+            className={cn(
+              "flex-1 px-2 py-1.5 text-xs font-bold text-giraffe-dark",
+              "border-2 border-black bg-white rounded",
+              "focus:outline-none focus:ring-0 focus:border-giraffe-orange",
+              "transition-colors duration-150"
+            )}
           >
-            <div className="p-4">
-              {/* Save New Profile Section */}
-              <div className="mb-4 pb-4 border-b border-slate-200">
-                <h3 className="text-sm font-bold text-slate-700 mb-2">
-                  Save Current Settings
-                </h3>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newProfileName}
-                    onChange={(e) => setNewProfileName(e.target.value)}
-                    placeholder="Profile name..."
-                    className="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    onKeyPress={(e) => e.key === 'Enter' && handleSaveProfile()}
-                  />
-                  <button
-                    onClick={handleSaveProfile}
-                    className="px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-md hover:bg-green-600 transition-colors"
-                  >
-                    Save
-                  </button>
-                </div>
-                {saveError && (
-                  <p className="mt-2 text-xs text-red-600">{saveError}</p>
-                )}
-              </div>
+            <option value="new">New Configuration</option>
+            {profiles.map(profile => (
+              <option key={profile.id} value={profile.id}>
+                {profile.name} ({profile.unit})
+              </option>
+            ))}
+          </select>
 
-              {/* Profiles List */}
-              <div>
-                <h3 className="text-sm font-bold text-slate-700 mb-2">
-                  Saved Profiles
-                </h3>
-
-                {isLoading && (
-                  <p className="text-sm text-slate-500">Loading profiles...</p>
-                )}
-
-                {error && (
-                  <p className="text-sm text-red-600">{error}</p>
-                )}
-
-                {!isLoading && profiles.length === 0 && (
-                  <p className="text-sm text-slate-500 italic">
-                    No saved profiles yet. Save your current settings above.
-                  </p>
-                )}
-
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {profiles.map((profile) => (
-                    <motion.div
-                      key={profile.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className={cn(
-                        'p-3 rounded-md border transition-all',
-                        selectedProfileForCompare === profile.id
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
-                      )}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-sm text-slate-800">
-                            {profile.name}
-                          </h4>
-                          <p className="text-xs text-slate-500">
-                            Unit: {profile.unit} • Created:{' '}
-                            {new Date(profile.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="flex gap-1">
-                          <button
-                            onClick={() => handleLoadProfile(profile.id)}
-                            className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                            title="Load this profile"
-                          >
-                            Load
-                          </button>
-                          <button
-                            onClick={() => handleCompareProfiles(profile.id)}
-                            className={cn(
-                              'px-2 py-1 text-xs rounded transition-colors',
-                              selectedProfileForCompare === profile.id
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-purple-500 text-white hover:bg-purple-600'
-                            )}
-                            title={
-                              selectedProfileForCompare
-                                ? 'Compare with this profile'
-                                : 'Select for comparison'
-                            }
-                          >
-                            {selectedProfileForCompare === profile.id
-                              ? 'Cancel'
-                              : selectedProfileForCompare
-                              ? 'Compare'
-                              : 'Compare'}
-                          </button>
-                          <button
-                            onClick={() => handleDeleteProfile(profile.id)}
-                            className="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                            title="Delete this profile"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Comparison Result */}
-              {comparisonResult && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-md"
-                >
-                  <h4 className="font-bold text-sm text-purple-900 mb-2">
-                    Comparison: {comparisonResult.profile1.name} vs{' '}
-                    {comparisonResult.profile2.name}
-                  </h4>
-
-                  {!comparisonResult.hasDifferences && (
-                    <p className="text-sm text-purple-700">
-                      ✓ Both profiles have identical parameters
-                    </p>
-                  )}
-
-                  {comparisonResult.hasDifferences && (
-                    <div className="space-y-1">
-                      {comparisonResult.differences.map((diff, idx) => (
-                        <div
-                          key={idx}
-                          className="text-xs bg-white p-2 rounded border border-purple-100"
-                        >
-                          <span className="font-semibold text-slate-700">
-                            {diff.parameter}:
-                          </span>{' '}
-                          <span className="text-purple-600">
-                            {diff.profile1Value}
-                          </span>
-                          {' → '}
-                          <span className="text-purple-600">
-                            {diff.profile2Value}
-                          </span>
-                          <span className="text-slate-500">
-                            {' '}
-                            ({diff.difference > 0 ? '+' : ''}
-                            {diff.difference.toFixed(2)})
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <button
-                    onClick={() => setComparisonResult(null)}
-                    className="mt-2 text-xs text-purple-600 hover:text-purple-800 underline"
-                  >
-                    Close comparison
-                  </button>
-                </motion.div>
-              )}
-
-              {selectedProfileForCompare && !comparisonResult && (
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                  <p className="text-xs text-blue-700">
-                    Select another profile to compare, or click "Cancel" to deselect.
-                  </p>
-                </div>
-              )}
+          {selectedProfileId !== 'new' && (
+            <div className="flex gap-1">
+              <button
+                onClick={handleCompare}
+                className="px-2 py-1 text-xs font-bold bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors border-2 border-black"
+                title="Compare with another profile"
+              >
+                Compare
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-2 py-1 text-xs font-bold bg-red-500 text-white rounded hover:bg-red-600 transition-colors border-2 border-black"
+                title="Delete this profile"
+              >
+                Delete
+              </button>
             </div>
+          )}
+        </div>
+
+        {/* Save Edits / Save as New buttons */}
+        {hasUnsavedChanges && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-2 flex gap-2"
+          >
+            <button
+              onClick={handleSaveEdits}
+              className="flex-1 px-3 py-1.5 text-xs font-bold bg-green-500 text-white rounded hover:bg-green-600 transition-colors border-2 border-black"
+            >
+              Save Edits to "{profiles.find(p => p.id === selectedProfileId)?.name}"
+            </button>
+            <button
+              onClick={handleSaveAsNew}
+              className="flex-1 px-3 py-1.5 text-xs font-bold bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors border-2 border-black"
+            >
+              Save as New Profile
+            </button>
+          </motion.div>
+        )}
+
+        {/* Save button for new configurations */}
+        {selectedProfileId === 'new' && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-2"
+          >
+            <button
+              onClick={handleSaveAsNew}
+              className="w-full px-3 py-1.5 text-xs font-bold bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors border-2 border-black"
+            >
+              Save Current Configuration
+            </button>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Save Dialog */}
+      <AnimatePresence>
+        {showSaveDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            onClick={() => setShowSaveDialog(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border-2 border-black rounded-md p-4 max-w-sm w-full mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-black text-giraffe-dark mb-3">
+                Save Profile
+              </h3>
+              <input
+                type="text"
+                value={newProfileName}
+                onChange={(e) => setNewProfileName(e.target.value)}
+                placeholder="Enter profile name..."
+                className="w-full px-3 py-2 text-sm border-2 border-black rounded focus:outline-none focus:border-giraffe-orange mb-3"
+                onKeyPress={(e) => e.key === 'Enter' && handleConfirmSaveNew()}
+                autoFocus
+              />
+              {saveError && (
+                <p className="text-xs text-red-600 mb-3">{saveError}</p>
+              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleConfirmSaveNew}
+                  className="flex-1 px-4 py-2 bg-green-500 text-white font-bold rounded hover:bg-green-600 transition-colors border-2 border-black"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSaveDialog(false);
+                    setNewProfileName('');
+                    setSaveError(null);
+                  }}
+                  className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded hover:bg-slate-300 transition-colors border-2 border-black"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+
+      {/* Compare Dialog */}
+      <AnimatePresence>
+        {showCompareDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            onClick={() => setShowCompareDialog(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border-2 border-black rounded-md p-4 max-w-sm w-full mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-black text-giraffe-dark mb-3">
+                Compare Profiles
+              </h3>
+              <p className="text-xs text-slate-600 mb-3">
+                Compare "{profiles.find(p => p.id === selectedProfileId)?.name}" with:
+              </p>
+              <select
+                value={compareProfileId || ''}
+                onChange={(e) => setCompareProfileId(e.target.value)}
+                className="w-full px-3 py-2 text-sm border-2 border-black rounded focus:outline-none focus:border-giraffe-orange mb-3"
+              >
+                <option value="">Select a profile...</option>
+                {profiles
+                  .filter(p => p.id !== selectedProfileId)
+                  .map(profile => (
+                    <option key={profile.id} value={profile.id}>
+                      {profile.name} ({profile.unit})
+                    </option>
+                  ))}
+              </select>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleConfirmCompare}
+                  disabled={!compareProfileId}
+                  className="flex-1 px-4 py-2 bg-purple-500 text-white font-bold rounded hover:bg-purple-600 transition-colors border-2 border-black disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Compare
+                </button>
+                <button
+                  onClick={() => {
+                    setShowCompareDialog(false);
+                    setCompareProfileId(null);
+                  }}
+                  className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded hover:bg-slate-300 transition-colors border-2 border-black"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Comparison Result - Table Format */}
+      <AnimatePresence>
+        {comparisonResult && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            onClick={() => setComparisonResult(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border-2 border-black rounded-md p-4 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-black text-giraffe-dark mb-3">
+                Profile Comparison
+              </h3>
+
+              {!comparisonResult.hasDifferences && (
+                <p className="text-sm text-green-600 font-semibold mb-4">
+                  ✓ Both profiles have identical parameters
+                </p>
+              )}
+
+              {/* Comparison Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full border-2 border-black">
+                  <thead>
+                    <tr className="bg-purple-100 border-2 border-black">
+                      <th className="px-3 py-2 text-left font-black text-xs text-giraffe-dark uppercase border-r-2 border-black">
+                        Parameter
+                      </th>
+                      <th className="px-3 py-2 text-center font-black text-xs text-purple-700 border-r-2 border-black">
+                        {comparisonResult.profile1.name}
+                        <div className="text-[10px] font-normal text-slate-600">
+                          ({comparisonResult.profile1.unit})
+                        </div>
+                      </th>
+                      <th className="px-3 py-2 text-center font-black text-xs text-purple-700 border-r-2 border-black">
+                        {comparisonResult.profile2.name}
+                        <div className="text-[10px] font-normal text-slate-600">
+                          ({comparisonResult.profile2.unit})
+                        </div>
+                      </th>
+                      <th className="px-3 py-2 text-center font-black text-xs text-giraffe-dark uppercase">
+                        Difference
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Get all parameters from both profiles */}
+                    {(() => {
+                      const profile1 = profiles.find(p => p.id === comparisonResult.profile1.id);
+                      const profile2 = profiles.find(p => p.id === comparisonResult.profile2.id);
+                      const allParams = new Set([
+                        ...Object.keys(profile1?.parameters || {}),
+                        ...Object.keys(profile2?.parameters || {})
+                      ]);
+
+                      return Array.from(allParams).map((paramKey) => {
+                        const val1 = profile1?.parameters[paramKey];
+                        const val2 = profile2?.parameters[paramKey];
+                        const diff = val2 - val1;
+                        const isDifferent = val1 !== val2;
+
+                        return (
+                          <tr
+                            key={paramKey}
+                            className={cn(
+                              'border-t-2 border-black',
+                              isDifferent ? 'bg-purple-50' : 'bg-white'
+                            )}
+                          >
+                            <td className="px-3 py-2 font-bold text-xs text-slate-700 border-r-2 border-black">
+                              {getParameterLabel(paramKey)}
+                            </td>
+                            <td className="px-3 py-2 text-center text-xs font-semibold text-slate-800 border-r-2 border-black">
+                              {val1 !== undefined ? val1 : '-'}
+                            </td>
+                            <td className="px-3 py-2 text-center text-xs font-semibold text-slate-800 border-r-2 border-black">
+                              {val2 !== undefined ? val2 : '-'}
+                            </td>
+                            <td className="px-3 py-2 text-center text-xs font-semibold">
+                              {isDifferent && val1 !== undefined && val2 !== undefined ? (
+                                <span className={cn(
+                                  diff > 0 ? 'text-green-600' : 'text-red-600'
+                                )}>
+                                  {diff > 0 ? '+' : ''}{diff.toFixed(2)}
+                                </span>
+                              ) : (
+                                <span className="text-slate-400">-</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+
+              <button
+                onClick={() => setComparisonResult(null)}
+                className="mt-4 w-full px-4 py-2 bg-purple-500 text-white font-bold rounded hover:bg-purple-600 transition-colors border-2 border-black"
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

@@ -71,7 +71,10 @@ export const convertSetbacksUnits = (setbacks, fromUnit, toUnit) => {
       if (dimensionlessFields.includes(key)) {
         convertedSetbacks[key] = value;
       } else {
-        convertedSetbacks[key] = convertUnits(value, fromUnit, toUnit);
+        const converted = convertUnits(value, fromUnit, toUnit);
+        // Round to appropriate decimal places to avoid floating-point errors
+        const decimals = toUnit === UNITS.FEET ? 1 : 2;
+        convertedSetbacks[key] = Math.round(converted * Math.pow(10, decimals)) / Math.pow(10, decimals);
       }
     } else {
       convertedSetbacks[key] = value;

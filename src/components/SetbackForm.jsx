@@ -1,18 +1,37 @@
 import React from 'react';
 import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import UnitsToggle from './UnitsToggle';
+import ProfileManager from './ProfileManager';
 import { formatValueForUnit, UNITS } from '../utils/unitConversions';
 import { cn } from '../utils/cn';
 import { ZONING_PARAMETERS, SETBACK_PARAMETERS } from '../config/zoningParameters';
 
-const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, onGenerate, isGenerating, selectedEnvelope }) => {
+const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, onGenerate, isGenerating, selectedEnvelope, onLoadProfile }) => {
   const [customSetbacks, setCustomSetbacks] = React.useState({});
   const [editingLabel, setEditingLabel] = React.useState(null);
   const [unnamedSetbacks, setUnnamedSetbacks] = React.useState(new Set());
   const [hoveredSetback, setHoveredSetback] = React.useState(null);
 
   const handleInputChange = (field, value) => {
-    const numValue = parseFloat(value) || 0;
+    let numValue = parseFloat(value) || 0;
+
+    // Round to appropriate precision based on parameter config
+    const allParams = [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS];
+    const paramConfig = allParams.find(p => p.key === field);
+
+    if (paramConfig) {
+      if (paramConfig.step >= 1) {
+        // Whole numbers
+        numValue = Math.round(numValue);
+      } else if (paramConfig.step === 0.01) {
+        // 2 decimal places
+        numValue = Math.round(numValue * 100) / 100;
+      } else {
+        // 1 decimal place (step 0.1)
+        numValue = Math.round(numValue * 10) / 10;
+      }
+    }
+
     onChange({
       ...setbacks,
       [field]: numValue
@@ -20,7 +39,9 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
   };
 
   const handleCustomSetbackChange = (name, value) => {
-    const numValue = parseFloat(value) || 0;
+    let numValue = parseFloat(value) || 0;
+    // Round custom setbacks to 1 decimal place
+    numValue = Math.round(numValue * 10) / 10;
     setCustomSetbacks({
       ...customSetbacks,
       [name]: numValue
@@ -133,14 +154,21 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
   }));
 
   return (
-    <motion.div 
+    <motion.div
       className="bg-white border-2 border-black rounded-md p-3 mb-3 w-full transform scale-80 origin-top"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Profile Manager above Parameters */}
+      <ProfileManager
+        currentParameters={setbacks}
+        currentUnit={currentUnit}
+        onLoadProfile={onLoadProfile}
+      />
+
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-        <motion.h3 
+        <motion.h3
           className="text-lg font-black text-giraffe-dark mb-3 md:mb-0"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -153,7 +181,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <UnitsToggle 
+          <UnitsToggle
             currentUnit={currentUnit}
             onUnitChange={onUnitChange}
             disabled={disabled}

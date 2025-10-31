@@ -229,9 +229,32 @@ export const useProfiles = () => {
       };
     }
 
+    // Clean up floating-point errors from old profiles (one-time fix)
+    const cleanedParams = {};
+    const dimensionlessFields = ['maxFAR', 'maxDensity', 'maxHeightStories'];
+
+    Object.keys(profile.parameters).forEach(key => {
+      const value = profile.parameters[key];
+      if (typeof value === 'number') {
+        if (dimensionlessFields.includes(key)) {
+          // Whole numbers for stories and density, 2 decimals for FAR
+          if (key === 'maxFAR') {
+            cleanedParams[key] = Math.round(value * 100) / 100;
+          } else {
+            cleanedParams[key] = Math.round(value);
+          }
+        } else {
+          // 1 decimal place for heights and setbacks
+          cleanedParams[key] = Math.round(value * 10) / 10;
+        }
+      } else {
+        cleanedParams[key] = value;
+      }
+    });
+
     return {
       success: true,
-      parameters: profile.parameters,
+      parameters: cleanedParams,
       unit: profile.unit,
       profile
     };

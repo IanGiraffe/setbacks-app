@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import SetbackForm from './SetbackForm';
 import ProjectBoundaryStatus from './ProjectBoundaryStatus';
 import ValidationPanel from './ValidationPanel';
-import ProfileManager from './ProfileManager';
 import { UNITS, convertSetbacksUnits } from '../utils/unitConversions';
 import { cn } from '../utils/cn';
 import { getDefaultParameters } from '../config/zoningParameters';
@@ -82,12 +81,10 @@ const SetbacksApp = () => {
   };
 
   const handleLoadProfile = (parameters, unit) => {
-    // Convert loaded parameters to current unit if needed
+    // Simply load the parameters as-is and switch to the saved unit
+    setSetbacks(parameters);
     if (unit !== currentUnit) {
-      const convertedParams = convertSetbacksUnits(parameters, unit, currentUnit);
-      setSetbacks(convertedParams);
-    } else {
-      setSetbacks(parameters);
+      setCurrentUnit(unit);
     }
   };
 
@@ -327,12 +324,6 @@ const SetbacksApp = () => {
               onGenerate={generateBuildingEnvelope}
               isGenerating={isGenerating}
               selectedEnvelope={selectedEnvelope}
-            />
-
-            {/* Profile Manager */}
-            <ProfileManager
-              currentParameters={setbacks}
-              currentUnit={currentUnit}
               onLoadProfile={handleLoadProfile}
             />
 

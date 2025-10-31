@@ -234,7 +234,7 @@ The validation system implements **Step 4** from your requirements:
 
 The architecture is ready for API integration:
 
-### ZoningAPIService (Skeleton)
+### ZoningAPIService (Skeleton) - see regris API, as this is just placeholder
 
 Location: `src/services/api/ZoningAPIService.js`
 
