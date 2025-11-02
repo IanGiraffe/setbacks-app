@@ -29,7 +29,7 @@
   - `raw`: optional ordinance excerpts and Claude reasoning for traceability.
 
 ## Key Considerations
-- **Geometry-to-parcel resolution**: Research Regrid REST API first (preferred). Only use MVT tile decoding if REST doesn't support coordinate-based lookup. MVT requires `@mapbox/vector-tile`/`pbf` dependencies and Web Mercator tile math.
+- **Geometry-to-parcel resolution**: ✅ **RESOLVED** - Use Regrid REST API `/parcels/area` endpoint. Pass user's drawn polygon directly (no centroid calculation or MVT tiles needed). Returns all parcels intersecting the boundary.
 - **Ordinance fetching**:
   - Implement caching layer (IndexedDB or Map) to avoid redundant fetches
   - Check robots.txt before scraping
@@ -44,98 +44,188 @@
   - Handle token limits (ordinances can be 10k+ tokens; may need chunking)
   - Use Claude 3.5 Sonnet for balance; extended thinking for complex ordinances
   - Validate Claude responses against schema
-- **Architecture Alignment**: Follow existing SOLID patterns:
-  - Domain services in `src/domain/`
-  - API clients in `src/services/api/`
-  - Utilities in `src/utils/`
-  - Constants/schemas in `src/constants/`
-- Keep module UI-agnostic with clear async APIs (e.g., `ZoningIntelligenceService.fetchZoningRegulationsForBoundary(boundaryGeoJson)`).
+- **Modular Architecture**:
+  - Module is **self-contained** in `src/modules/zoning-intelligence/`
+  - All dependencies internal to module folder for **portability**
+  - Public API exposed via single `index.js` export
+  - Can be copied to other projects with minimal configuration
+- **Module Independence**:
+  - No dependencies on app-specific code (domain services, etc.)
+  - Self-contained API clients, utilities, and schemas
+  - Configuration via `config/moduleConfig.js`
+  - All tests contained within `__tests__/` folder
+- Keep module UI-agnostic with clear async APIs (e.g., `ZoningIntelligence.fetchZoningRegulationsForBoundary(boundaryGeoJson)`).
 - Provide configuration to toggle live Claude/Regrid calls vs. mocked responses for development/testing.
 
 ## Architecture Overview
 
-Following the existing clean architecture pattern:
+**Modular, Portable Design**: The module is structured to be **self-contained and reusable** across multiple projects. Simply copy the `zoning-intelligence/` folder to another project, configure API keys, and use.
 
 ```
 src/
-├── domain/
-│   ├── RegridService.js              # NEW: Regrid API interactions
-│   ├── OrdinanceService.js           # NEW: Ordinance fetching with caching
-│   ├── ClaudeParserService.js        # NEW: Claude API for parsing ordinances
-│   ├── ZoningIntelligenceService.js  # NEW: Main orchestrator
-│   └── (existing: ZoningService.js, ValidationService.js, etc.)
+├── modules/
+│   └── zoning-intelligence/          # STANDALONE MODULE (portable across projects)
+│       ├── index.js                  # Public API - only export point
+│       ├── services/
+│       │   ├── RegridService.js
+│       │   ├── OrdinanceService.js
+│       │   ├── ClaudeParserService.js
+│       │   └── ZoningIntelligenceService.js
+│       ├── api/
+│       │   ├── RegridAPIClient.js
+│       │   └── ClaudeAPIClient.js
+│       ├── utils/
+│       │   ├── geometryUtils.js
+│       │   └── ordinanceCache.js
+│       ├── schemas/
+│       │   ├── zoningSchema.js
+│       │   └── claudePrompts.js
+│       ├── config/
+│       │   └── moduleConfig.js       # Module-specific configuration
+│       ├── __tests__/                # All tests contained in module
+│       │   ├── unit/
+│       │   ├── integration/
+│       │   └── fixtures/             # Mock data
+│       ├── README.md                 # Module documentation
+│       └── package.json              # Optional: list dependencies
 │
-├── services/api/
-│   ├── RegridAPIClient.js            # NEW: Regrid-specific API client
-│   ├── ClaudeAPIClient.js            # NEW: Claude Messages API client
-│   └── (existing: APIClient.js, ZoningAPIService.js)
+├── domain/                            # App-specific domain services
+│   ├── ZoningService.js
+│   └── ValidationService.js
 │
-├── utils/
-│   ├── geometryUtils.js              # NEW: Geometry operations (centroid extraction)
-│   ├── ordinanceCache.js             # NEW: Cache management for ordinances
-│   └── (existing: unitConversions.js, validators.js, etc.)
-│
-├── constants/
-│   ├── zoningSchema.js               # NEW: ZoningRegulationsResult typedef
-│   ├── claudePrompts.js              # NEW: Prompt templates
-│   └── (existing: validationRules.js, giraffeFlows.js)
-│
-└── config/
-    └── regridConfig.js               # NEW: Regrid API configuration
+└── services/api/                      # App's other API clients
+    └── APIClient.js
 ```
+
+### Module Public API (`index.js`)
+
+```javascript
+// src/modules/zoning-intelligence/index.js
+import { ZoningIntelligenceService } from './services/ZoningIntelligenceService.js';
+
+export const ZoningIntelligence = {
+  // Main method
+  fetchZoningRegulationsForBoundary: (geometry, options) =>
+    ZoningIntelligenceService.fetchZoningRegulationsForBoundary(geometry, options),
+
+  // Configuration
+  configure: (config) => { /* Set API keys, cache settings, etc. */ },
+
+  // Utilities
+  clearCache: () => { /* Clear ordinance cache */ }
+};
+
+// Export schemas for TypeScript/JSDoc users
+export * from './schemas/zoningSchema.js';
+```
+
+### Usage in This App
+
+```javascript
+// src/components/ZoningForm.jsx
+import { ZoningIntelligence } from '../modules/zoning-intelligence';
+
+const handleFetchZoning = async (boundaryGeometry) => {
+  const result = await ZoningIntelligence.fetchZoningRegulationsForBoundary(
+    boundaryGeometry,
+    { useMocks: false, cacheEnabled: true }
+  );
+
+  if (result.validation.isValid) {
+    setZoningData(result.standards);
+  }
+};
+```
+
+### Reusing in Other Projects
+
+1. **Copy module**: `cp -r src/modules/zoning-intelligence /path/to/other-project/src/modules/`
+2. **Configure**: Update API keys in `moduleConfig.js`
+3. **Install deps**: Add any required packages (turndown, etc.)
+4. **Import & use**: Same import pattern works across projects
 
 ## Implementation Checklist
 
-### Phase 1: Foundation & Schema Definition
-- [ ] Define `ZoningRegulationsResult` TypeScript/JSDoc schema in `src/constants/zoningSchema.js`
-  - Include all field types, enums for units (FEET | METERS), confidence scoring structure
+### Phase 1: Module Foundation & Schema Definition
+- [ ] Create module directory structure:
+  - Create `src/modules/zoning-intelligence/` folder
+  - Add subdirectories: `services/`, `api/`, `utils/`, `schemas/`, `config/`, `__tests__/`
+- [ ] Define `ZoningRegulationsResult` TypeScript/JSDoc schema in `schemas/zoningSchema.js`
+  - Include all field types, confidence scoring structure
   - Define validation schema for Claude responses
-- [ ] Create `src/utils/geometryUtils.js` with:
-  - `getCentroid(boundaryGeoJSON)` → { lat, lng }
+- [ ] Create `utils/geometryUtils.js` with:
   - `validateGeoJSON(geometry)` → boolean
+  - `getCentroid(boundaryGeoJSON)` → { lat, lng } (fallback only, not primary method)
   - Utilities for geometry hashing/comparison
-- [ ] Document boundary geometry flow:
-  - Trace how geometry is stored/retrieved in current app
-  - Define input contract: what GeoJSON format to expect
-  - Confirm `envelopeFactory.js` is the correct source
-- [ ] Create mock data fixtures:
-  - Sample Regrid API responses (with `zoning_type`, `zoning_code_link`)
-  - Sample ordinance HTML/text
-  - Sample Claude structured responses
-
-### Phase 2: Regrid Integration
-- [ ] Research Regrid API capabilities:
-  - Check if REST endpoint exists for coordinate-based parcel lookup
-  - Document API authentication requirements
-  - Identify rate limits and quotas
-  - Test API with sample coordinates
-- [ ] Implement `src/services/api/RegridAPIClient.js`:
-  - Extend `APIClient` base class
-  - Add Regrid token authentication
-  - Implement retry logic with exponential backoff
-  - Add request logging for debugging
-- [ ] Implement `src/domain/RegridService.js`:
-  - `getParcelByCoordinates(lat, lng, options)` → parcel data
-  - `getParcelByGeometry(boundaryGeoJSON, options)` → parcel data (uses centroid)
-  - Handle multiple parcels scenario (return array or closest?)
-  - Error handling for no parcel found
-  - Mock mode toggle for testing
-  - Validate and normalize Regrid responses
-- [ ] Unit tests:
-  - Test centroid extraction with various GeoJSON shapes
-  - Test Regrid response parsing (mock responses)
-  - Test error scenarios (no parcel, API failure, invalid token)
-- [ ] Integration test with real Regrid API (mark as slow/optional in CI)
-
-### Phase 3: Ordinance Fetching & Caching
-- [ ] Implement `src/utils/ordinanceCache.js`:
+- [ ] Create `utils/ordinanceCache.js`:
   - Cache interface: `get(url)`, `set(url, content)`, `has(url)`, `clear()`
   - Use Map for simple in-memory cache (upgrade to IndexedDB if needed)
   - Add TTL (time-to-live) for cache entries
   - Add cache size limits
-- [ ] Implement `src/domain/OrdinanceService.js`:
+- [ ] Create `config/moduleConfig.js`:
+  - Configuration object for API keys (Regrid, Claude)
+  - Cache settings (TTL, size limits)
+  - Rate limiting settings
+  - Mock mode toggles
+  - Export `configure()` method for runtime configuration
+- [ ] Document boundary geometry flow:
+  - Trace how geometry is stored/retrieved in current app
+  - Define input contract: what GeoJSON format to expect
+  - Confirm `envelopeFactory.js` is the correct source
+- [ ] Create mock data fixtures in `__tests__/fixtures/`:
+  - Sample Regrid API responses (with `zoning_type`, `zoning_code_link`)
+  - Sample ordinance HTML/text
+  - Sample Claude structured responses
+- [ ] Create module `README.md`:
+  - Module purpose and features
+  - Installation/setup instructions
+  - API documentation
+  - Usage examples
+  - Configuration guide
+
+### Phase 2: Regrid Integration
+- [x] Research Regrid API capabilities:
+  - ✅ REST endpoint `/parcels/area` exists for polygon-based parcel lookup (PRIMARY METHOD)
+  - ✅ Alternative `/parcels/point` endpoint for coordinate-based lookup (FALLBACK)
+  - ✅ Token authentication via query parameter `?token=<token>`
+  - ✅ No time-based rate limits found; trial token has 2000 parcel limit
+  - ✅ Successfully tested with Austin, TX parcels
+  - ✅ Premium zoning fields confirmed available: `zoning_type`, `zoning_subtype`, `zoning_code_link`, `zoning_id`
+  - ✅ **Key Finding**: Use `/parcels/area` with user's drawn polygon - NO centroid calculation needed!
+  - 📄 See: `src/modules/zoningIntelligence/__tests__/REGRID_API_FINDINGS.md`
+- [ ] Implement `api/RegridAPIClient.js`:
+  - HTTP client for Regrid API v2
+  - Add Regrid token authentication (query parameter)
+  - **PRIMARY**: `getParcelsByPolygon(geojson, options)` → array of parcels
+  - **FALLBACK**: `getParcelsByPoint(lat, lon, radius, options)` → array of parcels
+  - Implement retry logic with exponential backoff
+  - Add request logging for debugging
+  - Handle response structure: `data.parcels.features` (not `data.features`)
+- [ ] Implement `services/RegridService.js`:
+  - **PRIMARY**: `getParcelsByBoundary(boundaryGeoJSON, options)` → parcel data array
+    - Pass polygon directly to `/parcels/area` (no transformation)
+    - Returns ALL parcels intersecting the boundary
+  - **FALLBACK**: `getParcelByPoint(lat, lng, radius, options)` → parcel data
+    - Use if polygon method fails
+  - Handle multiple parcels scenario (return array with all parcels)
+  - Error handling for no parcel found, API failure, coverage issues
+  - Mock mode toggle for testing
+  - Validate and normalize Regrid responses
+  - Extract zoning data from `properties.fields` path
+- [ ] Unit tests in `__tests__/unit/`:
+  - Test polygon passthrough (no transformation)
+  - Test Regrid response parsing (mock responses)
+  - Test error scenarios (no parcel, API failure, invalid token, outside coverage)
+  - Test multiple parcel handling
+- [ ] Integration test with real Regrid API in `__tests__/integration/`:
+  - Use Austin, TX test coordinates (known working area)
+  - Verify polygon search returns multiple parcels
+  - Verify all premium zoning fields present
+
+### Phase 3: Ordinance Fetching & Caching
+- [ ] Implement `services/OrdinanceService.js`:
   - `fetchOrdinance(url, options)` → { text, metadata }
-  - Check cache first before fetching
+  - Check cache first before fetching (uses `utils/ordinanceCache.js`)
   - Fetch robots.txt and respect crawl rules
   - Rate limiting implementation (1 req/sec default)
   - Custom User-Agent header
@@ -143,19 +233,19 @@ src/
   - Extract metadata (title, last modified, etc.)
   - Error handling for 404, 403, timeout, etc.
   - Mock mode for testing
-- [ ] Add retry logic with exponential backoff to `APIClient`:
-  - Configurable max retries
+- [ ] Add retry logic with exponential backoff:
+  - Configurable max retries in service
   - Backoff strategy (e.g., 1s, 2s, 4s, 8s)
   - Only retry on transient errors (500s, timeouts)
-- [ ] Unit tests:
+- [ ] Unit tests in `__tests__/unit/`:
   - Test cache hit/miss scenarios
   - Test rate limiting (verify delays between requests)
   - Test HTML → Markdown conversion
   - Test error handling
-- [ ] Integration test with real ordinance URLs (optional/manual)
+- [ ] Integration test with real ordinance URLs in `__tests__/integration/` (optional/manual)
 
 ### Phase 4: Claude Integration
-- [ ] Define prompt templates in `src/constants/claudePrompts.js`:
+- [ ] Define prompt templates in `schemas/claudePrompts.js`:
   - System prompt with:
     - Output JSON schema definition
     - Instructions for extraction
@@ -165,7 +255,7 @@ src/
     - Insert ordinance content
     - Specify zoning district
     - Request specific fields
-- [ ] Implement `src/services/api/ClaudeAPIClient.js`:
+- [ ] Implement `api/ClaudeAPIClient.js`:
   - Authenticate with Claude API key
   - `sendMessage(systemPrompt, userPrompt, options)` → response
   - Support for prompt caching (cache ordinance, vary queries)
@@ -173,7 +263,7 @@ src/
   - Model selection (default to Claude 3.5 Sonnet)
   - Extended thinking support for complex ordinances
   - Error handling for API failures, rate limits
-- [ ] Implement `src/domain/ClaudeParserService.js`:
+- [ ] Implement `services/ClaudeParserService.js`:
   - `parseOrdinance(ordinanceText, zoningDistrict, options)` → ZoningRegulationsResult
   - Build system and user prompts from templates
   - Call Claude API
@@ -187,23 +277,24 @@ src/
   - Validate Claude response matches `ZoningRegulationsResult`
   - Log validation errors
   - Return partial results if some fields valid
-- [ ] Unit tests:
+- [ ] Unit tests in `__tests__/unit/`:
   - Test prompt generation with various inputs
   - Test JSON response parsing (mock Claude responses)
   - Test schema validation (valid and invalid responses)
   - Test error handling (malformed JSON, missing required fields)
   - Test confidence scoring logic
-- [ ] Integration test with real Claude API (mark as expensive/optional)
+- [ ] Integration test with real Claude API in `__tests__/integration/` (mark as expensive/optional)
 
-### Phase 5: Orchestration
-- [ ] Implement `src/domain/ZoningIntelligenceService.js`:
+### Phase 5: Orchestration & Public API
+- [ ] Implement `services/ZoningIntelligenceService.js`:
   - `fetchZoningRegulationsForBoundary(boundaryGeoJSON, options)` → ZoningRegulationsResult
   - Orchestration flow:
-    1. Extract centroid from geometry (GeometryUtils)
-    2. Fetch parcel data from Regrid (RegridService)
-    3. Fetch ordinance content (OrdinanceService)
-    4. Parse with Claude (ClaudeParserService)
-    5. Aggregate metadata and return complete result
+    1. Validate geometry (GeometryUtils)
+    2. Fetch parcel data from Regrid using polygon (RegridService) - returns array of parcels
+    3. Handle multiple parcels (process first, or all, based on options)
+    4. Fetch ordinance content (OrdinanceService)
+    5. Parse with Claude (ClaudeParserService)
+    6. Aggregate metadata and return complete result
   - Error handling at each stage:
     - Geometry invalid → return error
     - No parcel found → return error with details
@@ -214,13 +305,14 @@ src/
     - `cacheEnabled`: boolean (default true)
     - `forceRefresh`: boolean (ignore cache)
   - Logging throughout pipeline for debugging
-- [ ] Create `src/config/regridConfig.js`:
-  - Regrid API token and base URL
-  - Claude API key
-  - Cache configuration (TTL, size limits)
-  - Rate limit settings
-  - Toggle for mock vs. live mode
-- [ ] Integration tests:
+- [ ] Create module `index.js` (public API):
+  - Export `ZoningIntelligence` object with:
+    - `fetchZoningRegulationsForBoundary()` method
+    - `configure()` method for API keys and settings
+    - `clearCache()` utility method
+  - Export schemas and types for external use
+  - Document all public methods with JSDoc
+- [ ] Integration tests in `__tests__/integration/`:
   - Test full pipeline with mocked services
   - Test error propagation (what happens when each stage fails?)
   - Test cache behavior (verify ordinances are cached)
@@ -245,21 +337,29 @@ src/
   - Identify bottlenecks
   - Verify caching reduces latency
   - Estimate costs (Claude API tokens per ordinance)
-- [ ] Update `ARCHITECTURE.md`:
+- [ ] Update module `README.md`:
+  - Complete API documentation with examples
+  - Configuration guide (API keys, cache settings)
+  - Installation instructions for new projects
+  - Troubleshooting section
+  - Known limitations
+- [ ] Update project `ARCHITECTURE.md`:
   - Add section for Zoning Intelligence Module
-  - Document service responsibilities
+  - Explain modular structure and portability
+  - Document how to integrate module in this app
   - Explain data flow
-  - Provide configuration guide
   - Include usage examples
-- [ ] Create usage examples:
+- [ ] Create usage examples in module:
   - Basic usage in React component
   - Error handling patterns
   - Mock mode for development
   - Cache management
+  - Configuration examples
 - [ ] Code documentation:
   - Ensure all functions have JSDoc comments
   - Document schemas with examples
   - Add inline comments for complex logic
+  - Add `package.json` with dependencies list (optional)
 
 ## Validation Checklist
 - [ ] Run end-to-end test with mocked Regrid/Claude demonstrating populated dimensional template
@@ -279,16 +379,45 @@ src/
 
 ## Migration from Original Plan
 
+### Key Changes
+1. **Modular Structure**: All code self-contained in `src/modules/zoning-intelligence/` for portability
+2. **Public API**: Single entry point via `index.js` instead of scattered exports
+3. **Independent Tests**: All tests in module's `__tests__/` folder
+4. **Module Configuration**: Config isolated in `config/moduleConfig.js`
+5. **No External Dependencies**: Module doesn't depend on app-specific code
+
 ### Architecture Alignment
-- Follows existing SOLID principles
-- Services in `domain/` handle business logic
-- API clients in `services/api/` handle external integrations
-- Utilities are pure functions in `utils/`
-- Constants and schemas in `constants/`
-- Configuration in `config/`
+- **Module-first design**: Self-contained, portable module structure
+- Services handle business logic (RegridService, OrdinanceService, ClaudeParserService)
+- API clients handle external integrations (RegridAPIClient, ClaudeAPIClient)
+- Utilities are pure functions (geometryUtils, ordinanceCache)
+- Schemas define data contracts (zoningSchema, claudePrompts)
+- Configuration centralized in module config
 
 ### Testing Strategy
 - Unit tests for each service independently
 - Integration tests for service combinations
 - E2E tests (optional) for full pipeline
 - Mock mode eliminates external API dependencies for development
+- All tests self-contained in module's `__tests__/` folder
+
+## Module Portability Benefits
+
+### For This Project
+✅ Clean separation of concerns
+✅ Easy to test in isolation
+✅ Clear API boundaries
+✅ Can toggle mock mode during development
+
+### For Other Projects
+✅ Copy entire folder to new project
+✅ No refactoring needed - just configuration
+✅ Consistent API across all projects
+✅ Shared bug fixes and improvements
+✅ Can version module independently
+
+### Future Enhancements
+- Consider publishing as npm package
+- Add TypeScript definitions for better DX
+- Create CLI tool for testing module standalone
+- Add telemetry/analytics hook points

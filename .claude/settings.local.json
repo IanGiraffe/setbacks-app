@@ -10,7 +10,11 @@
       "Bash(npm run build:*)",
       "Bash(npx tailwindcss init:*)",
       "Bash(npm run lint)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(cat:*)",
+      "Bash(move:*)",
+      "Bash(node:*)",
+      "Bash(curl -s \"https://app.regrid.com/api/v2/parcels/point?token=YDJDxjbQwo3cjGJZNxxS93b4UP89uphtBk5zi8rKXgWMFr-jM8SxrWBMLCn3yeJz&lat=30.2672&lon=-97.7431&radius=5000&limit=1\")"
     ],
     "deny": [],
     "ask": []
