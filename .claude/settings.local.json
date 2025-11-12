@@ -14,7 +14,11 @@
       "Bash(cat:*)",
       "Bash(move:*)",
       "Bash(node:*)",
-      "Bash(curl -s \"https://app.regrid.com/api/v2/parcels/point?token=YDJDxjbQwo3cjGJZNxxS93b4UP89uphtBk5zi8rKXgWMFr-jM8SxrWBMLCn3yeJz&lat=30.2672&lon=-97.7431&radius=5000&limit=1\")"
+      "Bash(curl -s \"https://app.regrid.com/api/v2/parcels/point?token=YDJDxjbQwo3cjGJZNxxS93b4UP89uphtBk5zi8rKXgWMFr-jM8SxrWBMLCn3yeJz&lat=30.2672&lon=-97.7431&radius=5000&limit=1\")",
+      "Bash(npm test:*)",
+      "Bash(git checkout:*)",
+      "Bash(python -m pip:*)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

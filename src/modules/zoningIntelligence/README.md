@@ -29,15 +29,24 @@ This module provides intelligent zoning research capabilities by:
 
 ```
 zoningIntelligence/
-├── api/              # API clients (Phase 2)
-├── config/           # Configuration and API keys
-├── schemas/          # Type definitions and data structures
-├── services/         # Business logic services (Phase 2)
-└── utils/            # Utility functions
-    ├── geometry.js   # GeoJSON operations
-    ├── units.js      # Imperial unit utilities
-    ├── validation.js # Input validation
-    └── errors.js     # Error handling
+├── api/                  # API clients
+│   └── RegridAPIClient.js
+├── config/               # Configuration and API keys
+│   └── index.js
+├── schemas/              # Type definitions and data structures
+│   └── index.js
+├── services/             # Business logic services
+│   ├── RegridService.js      # Phase 2: Parcel lookup
+│   └── OrdinanceService.js   # Phase 3: Ordinance fetching
+├── utils/                # Utility functions
+│   ├── geometry.js           # GeoJSON operations
+│   ├── units.js              # Imperial unit utilities
+│   ├── validation.js         # Input validation
+│   ├── errors.js             # Error handling
+│   └── ordinanceCache.js     # Phase 3: Ordinance caching
+└── __tests__/            # Tests and demos
+    ├── ordinance-integration.js
+    └── ordinance-demo.js
 ```
 
 ## Configuration
@@ -49,7 +58,9 @@ VITE_REGRID_TOKEN=your_regrid_token_here
 VITE_CLAUDE_API_KEY=your_claude_api_key_here
 ```
 
-## Usage (Phase 1)
+## Usage
+
+### Phase 1: Configuration & Utilities
 
 ```javascript
 import {
@@ -77,6 +88,59 @@ const boundary = {
   geometry: { type: 'Polygon', coordinates: [...] }
 };
 const validation = validateBoundaryInput(boundary);
+```
+
+### Phase 2: Regrid Integration
+
+```javascript
+import { regridService } from './modules/zoningIntelligence';
+
+// Fetch parcels by point
+const parcels = await regridService.getParcelsByPoint(30.2672, -97.7431, {
+  radius: 5000,
+  limit: 10
+});
+
+// Fetch parcels by boundary
+const boundary = {
+  type: 'Feature',
+  geometry: { type: 'Polygon', coordinates: [...] }
+};
+const parcels = await regridService.getParcelsByBoundary(boundary);
+
+// Get summary
+const summary = regridService.getSummary(parcels);
+console.log(`Found ${summary.count} parcels`);
+```
+
+### Phase 3: Ordinance Fetching
+
+```javascript
+import { ordinanceService, OrdinanceService } from './modules/zoningIntelligence';
+
+// Fetch ordinance from URL (uses singleton with defaults)
+const result = await ordinanceService.fetchOrdinance('https://example.com/zoning-code');
+console.log(result.text); // Markdown content
+console.log(result.metadata.title); // "Zoning Code Chapter 5"
+
+// Custom configuration
+const customService = new OrdinanceService({
+  requestsPerSecond: 2,    // Rate limit
+  maxRetries: 5,           // Retry attempts
+  retryDelayMs: 2000,      // Initial retry delay
+  mockMode: false          // Use real fetching
+});
+
+// Fetch with options
+const result = await customService.fetchOrdinance(url, {
+  useCache: true,          // Use cached version if available (default)
+  checkRobots: true        // Check robots.txt (default)
+});
+
+// Cache management
+console.log(ordinanceService.getCacheStats());
+ordinanceService.clearCache();
+ordinanceService.pruneCache(); // Remove expired entries
 ```
 
 ## Schemas
@@ -126,29 +190,32 @@ GeoJSON Feature with Polygon/MultiPolygon geometry for parcel queries.
 4. **Cache**: Simple in-memory cache (IndexedDB in future phases)
 5. **Conversions**: Unit conversions to metric (for Giraffe integration) handled outside this module
 
-### Phase 2: Regrid Integration
-- [ ] Research Regrid API capabilities:
-  - Check if REST endpoint exists for coordinate-based parcel lookup
-  - Document API authentication requirements
-  - Identify rate limits and quotas
-  - Test API with sample coordinates
-- [ ] Implement `api/RegridAPIClient.js`:
-  - HTTP client for Regrid API (may extend base client pattern if needed)
-  - Add Regrid token authentication
-  - Implement retry logic with exponential backoff
-  - Add request logging for debugging
-- [ ] Implement `services/RegridService.js`:
-  - `getParcelByCoordinates(lat, lng, options)` → parcel data
-  - `getParcelByGeometry(boundaryGeoJSON, options)` → parcel data (uses centroid)
-  - Handle multiple parcels scenario (return array or closest?)
-  - Error handling for no parcel found
-  - Mock mode toggle for testing
-  - Validate and normalize Regrid responses
-- [ ] Unit tests in `__tests__/unit/`:
-  - Test centroid extraction with various GeoJSON shapes
-  - Test Regrid response parsing (mock responses)
-  - Test error scenarios (no parcel, API failure, invalid token)
-- [ ] Integration test with real Regrid API in `__tests__/integration/` (mark as slow/optional in CI)
+### Phase 2: Regrid Integration (Completed)
+- ✅ Researched Regrid API capabilities
+- ✅ Implemented `api/RegridAPIClient.js`
+- ✅ Implemented `services/RegridService.js`
+- ✅ Integration tests with real Regrid API
+
+### Phase 3: Ordinance Fetching & Caching (Completed)
+- ✅ Implemented `services/OrdinanceService.js`:
+  - `fetchOrdinance(url, options)` → { text, metadata }
+  - Cache-first strategy using `utils/ordinanceCache.js`
+  - Robots.txt checking and compliance
+  - Rate limiting (1 req/sec default, configurable)
+  - Custom User-Agent header
+  - HTML → Markdown conversion using Turndown
+  - Metadata extraction (title, last modified, description)
+  - Error handling for 404, 403, timeout, etc.
+  - Mock mode for testing
+- ✅ Implemented retry logic with exponential backoff:
+  - Configurable max retries (default: 3)
+  - Exponential backoff (1s, 2s, 4s, 8s)
+  - Only retries on transient errors (500s, timeouts)
+- ✅ Implemented `utils/ordinanceCache.js`:
+  - In-memory cache with TTL support (24hr default)
+  - Cache statistics and pruning
+  - Case-insensitive URL matching
+- ✅ Integration tests covering all features
 
 ## Notes
 

@@ -175,6 +175,7 @@ const ValidationPanel = ({ validationResults, isLoading = false }) => {
               <div><strong>Min Height (stories):</strong> {validationResults.providedValues.minHeightStories ?? 'null'}</div>
               <div><strong>FAR:</strong> {validationResults.providedValues.far ?? 'null'}</div>
               <div><strong>Density:</strong> {validationResults.providedValues.density ?? 'null'}</div>
+              <div><strong>Impervious Cover %:</strong> {validationResults.providedValues.imperviousCover ?? 'null'}</div>
             </div>
           </div>
         </motion.details>

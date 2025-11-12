@@ -129,6 +129,35 @@ export const validateDensity = (providedDensity, maxDensity) => {
 };
 
 /**
+ * Validate impervious cover percentage
+ * @param {number} providedCover - Actual impervious cover percentage from design
+ * @param {number} maxCover - Maximum allowed impervious cover percentage
+ * @returns {Object} Validation result
+ */
+export const validateImperviousCover = (providedCover, maxCover) => {
+  if (typeof providedCover !== 'number' || typeof maxCover !== 'number') {
+    return {
+      type: VALIDATION_TYPES.IMPERVIOUS_COVER,
+      status: VALIDATION_STATUS.UNKNOWN,
+      message: 'Impervious cover data unavailable'
+    };
+  }
+
+  const isCompliant = providedCover <= (maxCover + VALIDATION_TOLERANCE.IMPERVIOUS_COVER);
+
+  return {
+    type: VALIDATION_TYPES.IMPERVIOUS_COVER,
+    status: isCompliant ? VALIDATION_STATUS.COMPLIANT : VALIDATION_STATUS.BREACH,
+    message: isCompliant
+      ? `Impervious cover compliant: ${providedCover.toFixed(1)}% ≤ ${maxCover.toFixed(1)}%`
+      : VALIDATION_MESSAGES[VALIDATION_TYPES.IMPERVIOUS_COVER](providedCover, maxCover),
+    providedValue: providedCover,
+    maxValue: maxCover,
+    isCompliant
+  };
+};
+
+/**
  * Validate all design parameters
  * @param {Object} providedValues - Actual values from design
  * @param {Object} maxValues - Maximum allowed values
@@ -151,6 +180,10 @@ export const validateDesign = (providedValues, maxValues) => {
     density: validateDensity(
       providedValues.density,
       maxValues.maxDensity
+    ),
+    imperviousCover: validateImperviousCover(
+      providedValues.imperviousCover,
+      maxValues.maxImperviousCover
     )
   };
 

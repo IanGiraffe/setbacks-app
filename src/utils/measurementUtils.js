@@ -67,7 +67,8 @@ export const extractDesignMeasurements = (analytics) => {
     maxHeightStories: extractMeasure(analytics, GIRAFFE_MEASURES.MAX_HEIGHT_STORIES),
     minHeightStories: extractMeasure(analytics, GIRAFFE_MEASURES.MIN_HEIGHT_STORIES),
     far: extractMeasure(analytics, GIRAFFE_MEASURES.PROVIDED_FAR),
-    density: extractMeasure(analytics, GIRAFFE_MEASURES.PROVIDED_DENSITY)
+    density: extractMeasure(analytics, GIRAFFE_MEASURES.PROVIDED_DENSITY),
+    imperviousCover: extractMeasure(analytics, GIRAFFE_MEASURES.PROVIDED_IMPERVIOUS_COVER)
   };
 
   console.log('📊 Extracted measurements:', measurements);

@@ -24,8 +24,13 @@ export { default as regridClient } from './api/RegridAPIClient.js';
 export { RegridService } from './services/RegridService.js';
 export { default as regridService } from './services/RegridService.js';
 
+// Services (Phase 3)
+export { default as OrdinanceService } from './services/OrdinanceService.js';
+export { default as ordinanceCache } from './utils/ordinanceCache.js';
+
 // Public API for module consumers
 import regridService from './services/RegridService.js';
+import OrdinanceService from './services/OrdinanceService.js';
 
 /**
  * Main module API
@@ -60,6 +65,10 @@ export const ZoningIntelligence = {
     regridService.getSummary(parcels),
 };
 
-// Future Phase 3 exports (Claude integration)
+// Ordinance service singleton
+const ordinanceService = new OrdinanceService();
+
+export { ordinanceService };
+
+// Future Phase 4 exports (Claude integration)
 // export { ClaudeService } from './services/ClaudeService.js';
-// export { OrdinanceService } from './services/OrdinanceService.js';

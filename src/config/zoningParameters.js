@@ -49,6 +49,16 @@ export const ZONING_PARAMETERS = [
     min: 0,
     unit: 'none', // Dimensionless - units per acre or similar
     description: 'Maximum density (e.g., dwelling units per acre)'
+  },
+  {
+    key: 'maxImperviousCover',
+    label: 'Max Impervious Cover %',
+    defaultValue: 70,
+    step: 1,
+    min: 0,
+    max: 100,
+    unit: 'none', // Percentage
+    description: 'Maximum impervious cover percentage'
   }
 ];
 

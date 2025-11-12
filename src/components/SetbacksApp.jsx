@@ -53,7 +53,8 @@ const SetbacksApp = () => {
             sideSetback: envelopeParams.setbackSteps?.side?.[0]?.inset || 5,
             rearSetback: envelopeParams.setbackSteps?.rear?.[0]?.inset || 10,
             maxFAR: envelopeParams.maxFAR || 2.0,
-            maxDensity: envelopeParams.maxDensity || 50
+            maxDensity: envelopeParams.maxDensity || 50,
+            maxImperviousCover: envelopeParams.maxImperviousCover || 70
           };
           
           // Convert from meters to current unit if needed

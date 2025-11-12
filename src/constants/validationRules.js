@@ -17,6 +17,7 @@ export const VALIDATION_TYPES = {
   HEIGHT_STORIES: 'height_stories',
   FAR: 'far',
   DENSITY: 'density',
+  IMPERVIOUS_COVER: 'impervious_cover',
   SETBACK_ENCROACHMENT: 'setback_encroachment'
 };
 
@@ -30,7 +31,8 @@ export const GIRAFFE_MEASURES = {
   MAX_HEIGHT_STORIES: 'Provided Max Height (stories)',
   MIN_HEIGHT_STORIES: 'Provided Min Height (stories)',
   PROVIDED_FAR: 'Provided FAR',
-  PROVIDED_DENSITY: 'Provided Density'
+  PROVIDED_DENSITY: 'Provided Density',
+  PROVIDED_IMPERVIOUS_COVER: 'Provided Impervious Cover %'
 };
 
 /**
@@ -49,6 +51,9 @@ export const VALIDATION_MESSAGES = {
   [VALIDATION_TYPES.DENSITY]: (provided, max) =>
     `Density breach: ${provided.toFixed(1)} units/acre exceeds maximum ${max.toFixed(1)} units/acre`,
 
+  [VALIDATION_TYPES.IMPERVIOUS_COVER]: (provided, max) =>
+    `Impervious cover breach: ${provided.toFixed(1)}% exceeds maximum ${max.toFixed(1)}%`,
+
   [VALIDATION_TYPES.SETBACK_ENCROACHMENT]: () =>
     `Setback breach: Building encroaches on required setbacks`
 };
@@ -60,5 +65,6 @@ export const VALIDATION_MESSAGES = {
 export const VALIDATION_TOLERANCE = {
   HEIGHT: 0.01, // 0.01 ft tolerance
   FAR: 0.001,   // 0.001 FAR tolerance
-  DENSITY: 0.01 // 0.01 units/acre tolerance
+  DENSITY: 0.01, // 0.01 units/acre tolerance
+  IMPERVIOUS_COVER: 0.01 // 0.01% tolerance
 };

@@ -62,7 +62,7 @@ export const convertSetbacksUnits = (setbacks, fromUnit, toUnit) => {
   }
 
   const convertedSetbacks = {};
-  const dimensionlessFields = ['maxFAR', 'maxDensity', 'maxHeightStories']; // These don't need unit conversion
+  const dimensionlessFields = ['maxFAR', 'maxDensity', 'maxHeightStories', 'maxImperviousCover']; // These don't need unit conversion
 
   Object.keys(setbacks).forEach(key => {
     const value = setbacks[key];
