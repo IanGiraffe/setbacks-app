@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { motion } from 'framer-motion';
 import UnitsToggle from './UnitsToggle';
 import ProfileManager from './ProfileManager';
 import { formatValueForUnit, UNITS } from '../utils/unitConversions';

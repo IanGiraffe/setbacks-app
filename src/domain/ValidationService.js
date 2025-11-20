@@ -87,7 +87,6 @@ export class ValidationService {
         zoningParams: enabledZoningParams
       };
     } catch (error) {
-      console.error('Error validating envelope:', error);
       return {
         status: VALIDATION_STATUS.UNKNOWN,
         message: `Validation error: ${error.message}`,

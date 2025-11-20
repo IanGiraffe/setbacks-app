@@ -74,7 +74,6 @@ class OrdinanceService {
       return robots.isAllowed(url, this.userAgent);
     } catch (error) {
       // If robots.txt fails, allow by default
-      console.warn(`Failed to fetch robots.txt for ${url}:`, error.message);
       return true;
     }
   }
@@ -121,7 +120,6 @@ class OrdinanceService {
     try {
       return this.turndownService.turndown(html);
     } catch (error) {
-      console.warn('Failed to convert HTML to Markdown:', error.message);
       // Fallback: strip HTML tags
       return html.replace(/<[^>]*>/g, '');
     }
@@ -154,10 +152,8 @@ class OrdinanceService {
         }
 
         lastError = new Error(`Server error: ${response.status} ${response.statusText}`);
-        console.warn(`Attempt ${attempt}/${this.maxRetries} failed with status ${response.status}`);
       } catch (error) {
         lastError = error;
-        console.warn(`Attempt ${attempt}/${this.maxRetries} failed:`, error.message);
       }
 
       // Wait before retrying with exponential backoff
@@ -196,7 +192,6 @@ class OrdinanceService {
 
     // Check cache first
     if (useCache && ordinanceCache.has(url)) {
-      console.log(`Cache hit for ${url}`);
       return ordinanceCache.get(url);
     }
 

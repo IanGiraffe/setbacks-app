@@ -23,10 +23,8 @@ export class GiraffeAdapter {
   static async createRawSection(feature) {
     try {
       const result = await rpc.invoke('createRawSection', [feature]);
-      console.log('Created raw section:', result);
       return { success: true, data: result };
     } catch (error) {
-      console.error('Error creating raw section:', error);
       return { success: false, error: error.message };
     }
   }
@@ -39,10 +37,8 @@ export class GiraffeAdapter {
   static async updateRawSection(feature) {
     try {
       const result = await rpc.invoke('updateRawSection', [feature]);
-      console.log('Updated raw section:', result);
       return { success: true, data: result };
     } catch (error) {
-      console.error('Error updating raw section:', error);
       return { success: false, error: error.message };
     }
   }
@@ -56,7 +52,6 @@ export class GiraffeAdapter {
       const result = await rpc.invoke('getSelectedFeatures', []);
       return result;
     } catch (error) {
-      console.error('Error getting selected features:', error);
       return { features: [] };
     }
   }
@@ -97,10 +92,8 @@ export class GiraffeAdapter {
   static async getAnalytics() {
     try {
       const result = await rpc.invoke('getAnalyticsResult', []);
-      console.log('Analytics response:', result);
       return result;
     } catch (error) {
-      console.error('Error getting analytics:', error);
       return null;
     }
   }
@@ -206,7 +199,6 @@ export class GiraffeAdapter {
         sideIndices: params.sideIndices
       };
     } catch (error) {
-      console.error('Error extracting envelope parameters:', error);
       return null;
     }
   }

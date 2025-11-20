@@ -55,7 +55,6 @@ export class ZoningAPIService {
    */
   static async fetchByParcelId(parcelId, jurisdiction) {
     // SKELETON IMPLEMENTATION
-    console.log('Fetching zoning data for parcel:', parcelId, 'in', jurisdiction);
 
     // TODO: Replace with actual API call
     // const client = this.createClient(ZONING_API_CONFIG.GENERIC_API);
@@ -89,7 +88,6 @@ export class ZoningAPIService {
    */
   static async fetchByAddress(address, city, state) {
     // SKELETON IMPLEMENTATION
-    console.log('Fetching zoning data for address:', address, city, state);
     return null;
 
     /*
@@ -117,7 +115,6 @@ export class ZoningAPIService {
    */
   static async fetchByCoordinates(lat, lng) {
     // SKELETON IMPLEMENTATION
-    console.log('Fetching zoning data for coordinates:', lat, lng);
     return null;
 
     /*

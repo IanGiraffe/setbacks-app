@@ -112,10 +112,6 @@ export class RegridAPIClient {
         const response = await fetch(url, options);
         const elapsed = Date.now() - startTime;
 
-        // Log request (hide token in URL)
-        const sanitizedUrl = url.replace(/token=[^&]+/, 'token=***');
-        console.log(`[RegridAPI] ${options.method} ${sanitizedUrl} - ${response.status} (${elapsed}ms)`);
-
         if (!response.ok) {
           const errorText = await response.text();
 
@@ -131,7 +127,6 @@ export class RegridAPIClient {
           // Retry on server errors (5xx) or rate limits (429)
           if ((response.status >= 500 || response.status === 429) && attempt < retries) {
             const backoffMs = Math.pow(2, attempt) * 1000; // Exponential backoff: 2s, 4s, 8s
-            console.warn(`[RegridAPI] Retry ${attempt}/${retries} after ${backoffMs}ms...`);
             await this._sleep(backoffMs);
             continue;
           }
@@ -154,7 +149,6 @@ export class RegridAPIClient {
 
         if (attempt < retries) {
           const backoffMs = Math.pow(2, attempt) * 1000;
-          console.warn(`[RegridAPI] Network error, retry ${attempt}/${retries} after ${backoffMs}ms...`);
           await this._sleep(backoffMs);
           continue;
         }

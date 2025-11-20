@@ -64,8 +64,6 @@ export class ValidationError extends Error {
  * @returns {Object} Standardized error object
  */
 export function handleApiError(error, operation) {
-  console.error(`API Error during ${operation}:`, error);
-
   // Network errors
   if (error.name === 'NetworkError' || error.message?.includes('network')) {
     return createError(
@@ -151,8 +149,6 @@ export function handleValidationError(errors, context = {}) {
  * @returns {Object} Standardized error object
  */
 export function handleCacheError(error, operation) {
-  console.warn(`Cache error during ${operation}:`, error);
-
   return createError(
     ERROR_TYPES.CACHE_ERROR,
     `Cache operation failed: ${operation}`,
@@ -177,16 +173,6 @@ export function logError(error, additionalContext = {}) {
       ...additionalContext
     }
   };
-
-  console.error('[ZoningIntelligence Error]', errorInfo);
-
-  if (error.originalError) {
-    console.error('Original error:', error.originalError);
-  }
-
-  if (error.stack) {
-    console.error('Stack trace:', error.stack);
-  }
 }
 
 /**
@@ -223,7 +209,6 @@ export async function withRetry(operation, maxRetries = 3, delayMs = 1000) {
       return await operation();
     } catch (error) {
       lastError = error;
-      console.warn(`Attempt ${attempt}/${maxRetries} failed:`, error.message);
 
       if (attempt < maxRetries) {
         await new Promise(resolve => setTimeout(resolve, delayMs * attempt));

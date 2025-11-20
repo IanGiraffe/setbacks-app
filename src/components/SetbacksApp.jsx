@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { rpc } from '@gi-nx/iframe-sdk';
 import { useGiraffeState } from '@gi-nx/iframe-sdk-react';
-import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { motion } from 'framer-motion';
 import SetbackForm from './SetbackForm';
 import ProjectBoundaryStatus from './ProjectBoundaryStatus';
 import ValidationPanel from './ValidationPanel';
 import { UNITS, convertSetbacksUnits } from '../utils/unitConversions';
-import { cn } from '../utils/cn';
 import { getDefaultParameters, getDefaultEnabledState } from '../config/zoningParameters';
 import { useValidation } from '../hooks/useValidation';
 
@@ -155,7 +154,6 @@ const SetbacksApp = () => {
         });
         
         await rpc.invoke('updateRawSection', [updatedEnvelope]);
-        console.log('Building envelope updated successfully');
         // Trigger validation after update
         setTimeout(() => validate(), 500);
       } else {
@@ -165,13 +163,11 @@ const SetbacksApp = () => {
           : customSetbacks;
         const envelopeFeature = createEnvelopeFeature(project, setbacksInMeters, customSetbacksInMeters);
         await rpc.invoke('createRawSection', [envelopeFeature]);
-        console.log('Building envelope created successfully');
         // Trigger validation after create
         setTimeout(() => validate(), 500);
       }
     } catch (err) {
       setError(`Failed to ${selectedEnvelope ? 'update' : 'create'} building envelope: ` + err.message);
-      console.error(`Error ${selectedEnvelope ? 'updating' : 'creating'} building envelope:`, err);
     } finally {
       setIsGenerating(false);
     }

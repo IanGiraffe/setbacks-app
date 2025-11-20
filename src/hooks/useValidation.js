@@ -39,7 +39,6 @@ export const useValidation = (selectedEnvelope, zoningParams, enabledParams = {}
       setValidationResults(results);
       return results;
     } catch (error) {
-      console.error('Validation error:', error);
       setValidationResults(null);
     } finally {
       setIsValidating(false);

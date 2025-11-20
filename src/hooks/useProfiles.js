@@ -52,7 +52,6 @@ export const useProfiles = () => {
       setProfiles(storedProfiles);
     } catch (err) {
       setError(`Failed to load profiles: ${err.message}`);
-      console.error('Error loading profiles:', err);
     } finally {
       setIsLoading(false);
     }

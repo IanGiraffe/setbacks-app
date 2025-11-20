@@ -4,9 +4,7 @@ export const createEnvelopeFeature = (projectGeometry, setbackValues, envelopeId
   // Use existing ID if updating, or create new ID if creating
   // Use a more unique ID format to avoid collisions
   const featureId = envelopeId || `SETBACKS_APP_ENVELOPE_${projectGeometry.properties?.id || 'unknown'}_${Date.now()}`;
-  
-  console.log('Creating envelope with ID:', featureId);
-  
+
   const envelopeFeature = {
     type: "Feature",
     properties: {

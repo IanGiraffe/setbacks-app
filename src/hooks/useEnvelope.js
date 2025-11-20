@@ -60,7 +60,6 @@ export const useEnvelope = () => {
       const result = await GiraffeAdapter.createRawSection(envelopeFeature);
 
       if (result.success) {
-        console.log('Envelope created successfully');
         return { success: true, data: result.data };
       } else {
         throw new Error(result.error || 'Failed to create envelope');
@@ -68,7 +67,6 @@ export const useEnvelope = () => {
     } catch (err) {
       const errorMessage = `Failed to create envelope: ${err.message}`;
       setError(errorMessage);
-      console.error('Error creating envelope:', err);
       return { success: false, error: errorMessage };
     } finally {
       setIsGenerating(false);
@@ -144,7 +142,6 @@ export const useEnvelope = () => {
       const result = await GiraffeAdapter.updateRawSection(updatedEnvelope);
 
       if (result.success) {
-        console.log('Envelope updated successfully');
         return { success: true, data: result.data };
       } else {
         throw new Error(result.error || 'Failed to update envelope');
@@ -152,7 +149,6 @@ export const useEnvelope = () => {
     } catch (err) {
       const errorMessage = `Failed to update envelope: ${err.message}`;
       setError(errorMessage);
-      console.error('Error updating envelope:', err);
       return { success: false, error: errorMessage };
     } finally {
       setIsGenerating(false);

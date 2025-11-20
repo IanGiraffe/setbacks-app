@@ -41,7 +41,6 @@ export class APIClient {
 
       return await response.json();
     } catch (error) {
-      console.error('API GET error:', error);
       throw error;
     }
   }
@@ -70,7 +69,6 @@ export class APIClient {
 
       return await response.json();
     } catch (error) {
-      console.error('API POST error:', error);
       throw error;
     }
   }
@@ -99,7 +97,6 @@ export class APIClient {
 
       return await response.json();
     } catch (error) {
-      console.error('API PUT error:', error);
       throw error;
     }
   }
@@ -126,7 +123,6 @@ export class APIClient {
 
       return await response.json();
     } catch (error) {
-      console.error('API DELETE error:', error);
       throw error;
     }
   }

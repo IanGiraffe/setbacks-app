@@ -15,7 +15,6 @@ import { GIRAFFE_MEASURES } from '../constants/validationRules';
  */
 export const extractMeasure = (analytics, measureName) => {
   if (!analytics || !analytics.grouped) {
-    console.log(`No analytics or grouped data for measure: ${measureName}`);
     return null;
   }
 
@@ -26,13 +25,11 @@ export const extractMeasure = (analytics, measureName) => {
   // Get the first category (should only be one)
   const categoryId = Object.keys(grouped)[0];
   if (!categoryId) {
-    console.log(`No category found in grouped data`);
     return null;
   }
 
   const usageRows = grouped[categoryId]?.usages?.__COMBINED?.rows;
   if (!usageRows) {
-    console.log(`No rows found in grouped.${categoryId}.usages.__COMBINED`);
     return null;
   }
 
@@ -40,18 +37,15 @@ export const extractMeasure = (analytics, measureName) => {
   const row = usageRows.find(r => r.measure?.name === measureName);
 
   if (!row) {
-    console.log(`No row found for measure: ${measureName}`);
     return null;
   }
 
   if (!row.columns || row.columns.length === 0) {
-    console.log(`No columns for measure: ${measureName}`);
     return null;
   }
 
   // Extract value from first column (typically __COMBINED group)
   const value = row.columns[0]?.value ?? null;
-  console.log(`✓ Extracted ${measureName}:`, value);
   return value;
 };
 
@@ -71,7 +65,6 @@ export const extractDesignMeasurements = (analytics) => {
     imperviousCover: extractMeasure(analytics, GIRAFFE_MEASURES.PROVIDED_IMPERVIOUS_COVER)
   };
 
-  console.log('📊 Extracted measurements:', measurements);
   return measurements;
 };
 
