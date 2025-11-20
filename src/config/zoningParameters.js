@@ -98,16 +98,30 @@ export const SETBACK_PARAMETERS = [
 
 /**
  * Get default values for all parameters
- * @returns {Object} Object with all parameter keys and default values
+ * @returns {Object} Object with all parameter keys and default values (all set to 0)
  */
 export const getDefaultParameters = () => {
   const defaults = {};
 
   [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS].forEach(param => {
-    defaults[param.key] = param.defaultValue;
+    defaults[param.key] = 0; // Start with 0 values
   });
 
   return defaults;
+};
+
+/**
+ * Get default enabled state for all parameters
+ * @returns {Object} Object with all parameter keys set to false (disabled by default)
+ */
+export const getDefaultEnabledState = () => {
+  const enabled = {};
+
+  [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS].forEach(param => {
+    enabled[param.key] = false; // Start with all disabled
+  });
+
+  return enabled;
 };
 
 /**
@@ -129,6 +143,16 @@ export const requiresUnitConversion = (key) => {
 export const getParameterConfig = (key) => {
   const allParams = [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS];
   return allParams.find(p => p.key === key) || null;
+};
+
+/**
+ * Check if a parameter key is a standard (predefined) parameter
+ * @param {string} key - Parameter key
+ * @returns {boolean} True if parameter is a standard parameter
+ */
+export const isStandardParameter = (key) => {
+  const allParams = [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS];
+  return allParams.some(p => p.key === key);
 };
 
 /**

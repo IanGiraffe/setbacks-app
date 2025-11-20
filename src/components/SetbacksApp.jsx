@@ -7,7 +7,7 @@ import ProjectBoundaryStatus from './ProjectBoundaryStatus';
 import ValidationPanel from './ValidationPanel';
 import { UNITS, convertSetbacksUnits } from '../utils/unitConversions';
 import { cn } from '../utils/cn';
-import { getDefaultParameters } from '../config/zoningParameters';
+import { getDefaultParameters, getDefaultEnabledState } from '../config/zoningParameters';
 import { useValidation } from '../hooks/useValidation';
 
 const SetbacksApp = () => {
@@ -19,8 +19,10 @@ const SetbacksApp = () => {
   const project = useGiraffeState('project');
   const selectedFeatures = useGiraffeState('selected');
 
-  // Default values from configuration (in feet)
+  // Default values from configuration (in feet) - all start at 0
   const [setbacks, setSetbacks] = useState(getDefaultParameters());
+  // Track which parameters are enabled (disabled by default)
+  const [enabledParams, setEnabledParams] = useState(getDefaultEnabledState());
 
   // Validation hook - validate in feet (Giraffe analytics are in feet)
   // Convert to feet if current unit is meters
@@ -29,7 +31,8 @@ const SetbacksApp = () => {
     : setbacks;
   const { validationResults, isValidating, validate } = useValidation(
     selectedEnvelope,
-    setbacksInFeet
+    setbacksInFeet,
+    enabledParams
   );
 
   const hasProjectBoundary = project && project.geometry;
@@ -37,40 +40,22 @@ const SetbacksApp = () => {
   // Listen for envelope selection
   useEffect(() => {
     if (selectedFeatures && selectedFeatures.features) {
-      const envelope = selectedFeatures.features.find(feature => 
+      const envelope = selectedFeatures.features.find(feature =>
         feature.properties && feature.properties.usage === 'Envelope'
       );
-      
+
       if (envelope) {
+        // Only update selectedEnvelope state, don't modify parameters
+        // We want to track which envelope is selected for validation/updating,
+        // but we don't want to overwrite user's current parameter values
         setSelectedEnvelope(envelope);
-        // Extract setback parameters from the selected envelope and populate the form
-        const envelopeParams = envelope.properties?.flow?.inputs?.['62f9968fb7ab458698ecc6b32cc20fef']?.parameters;
-        if (envelopeParams) {
-          const extractedSetbacks = {
-            maxHeight: envelopeParams.maxHeight || 40,
-            maxHeightStories: envelopeParams.maxHeightStories || 3,
-            frontSetback: envelopeParams.setbackSteps?.front?.[0]?.inset || 25,
-            sideSetback: envelopeParams.setbackSteps?.side?.[0]?.inset || 5,
-            rearSetback: envelopeParams.setbackSteps?.rear?.[0]?.inset || 10,
-            maxFAR: envelopeParams.maxFAR || 2.0,
-            maxDensity: envelopeParams.maxDensity || 50,
-            maxImperviousCover: envelopeParams.maxImperviousCover || 70
-          };
-          
-          // Convert from meters to current unit if needed
-          const convertedSetbacks = currentUnit === UNITS.FEET 
-            ? convertSetbacksUnits(extractedSetbacks, UNITS.METERS, UNITS.FEET)
-            : extractedSetbacks;
-          
-          setSetbacks(convertedSetbacks);
-        }
       } else {
         setSelectedEnvelope(null);
       }
     } else {
       setSelectedEnvelope(null);
     }
-  }, [selectedFeatures, currentUnit]);
+  }, [selectedFeatures]);
 
   const handleUnitChange = (newUnit) => {
     if (newUnit !== currentUnit) {
@@ -81,12 +66,13 @@ const SetbacksApp = () => {
     }
   };
 
-  const handleLoadProfile = (parameters, unit) => {
-    // Simply load the parameters as-is and switch to the saved unit
+  const handleLoadProfile = (parameters, unit, enabled, customSetbacks) => {
     setSetbacks(parameters);
     if (unit !== currentUnit) {
       setCurrentUnit(unit);
     }
+    setEnabledParams(enabled);
+    return customSetbacks;
   };
 
   const generateBuildingEnvelope = async (customSetbacks = {}) => {
@@ -326,6 +312,8 @@ const SetbacksApp = () => {
               isGenerating={isGenerating}
               selectedEnvelope={selectedEnvelope}
               onLoadProfile={handleLoadProfile}
+              enabledParams={enabledParams}
+              onEnabledChange={setEnabledParams}
             />
 
             {/* Validation Panel */}

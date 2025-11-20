@@ -6,11 +6,20 @@ import { formatValueForUnit, UNITS } from '../utils/unitConversions';
 import { cn } from '../utils/cn';
 import { ZONING_PARAMETERS, SETBACK_PARAMETERS } from '../config/zoningParameters';
 
-const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, onGenerate, isGenerating, selectedEnvelope, onLoadProfile }) => {
+const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, onGenerate, isGenerating, selectedEnvelope, onLoadProfile, enabledParams, onEnabledChange }) => {
   const [customSetbacks, setCustomSetbacks] = React.useState({});
   const [editingLabel, setEditingLabel] = React.useState(null);
   const [unnamedSetbacks, setUnnamedSetbacks] = React.useState(new Set());
   const [hoveredSetback, setHoveredSetback] = React.useState(null);
+
+  // Wrap onLoadProfile to handle custom setbacks restoration
+  const handleLoadProfileWrapper = React.useCallback((parameters, unit, enabled, customSetbacksToLoad) => {
+    const result = onLoadProfile(parameters, unit, enabled, customSetbacksToLoad);
+    if (customSetbacksToLoad) {
+      setCustomSetbacks(customSetbacksToLoad);
+    }
+    return result;
+  }, [onLoadProfile]);
 
   const handleInputChange = (field, value) => {
     let numValue = parseFloat(value) || 0;
@@ -164,7 +173,9 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
       <ProfileManager
         currentParameters={setbacks}
         currentUnit={currentUnit}
-        onLoadProfile={onLoadProfile}
+        onLoadProfile={handleLoadProfileWrapper}
+        enabledParams={enabledParams}
+        customSetbacks={customSetbacks}
       />
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">

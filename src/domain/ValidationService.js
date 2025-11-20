@@ -16,9 +16,10 @@ export class ValidationService {
    * Validate a design against zoning parameters
    * @param {string} envelopeId - Envelope feature ID (unused - analytics are project-wide)
    * @param {Object} zoningParams - Zoning parameters to validate against
+   * @param {Object} enabledParams - Which parameters are enabled for validation
    * @returns {Promise<Object>} Validation results
    */
-  static async validateEnvelope(envelopeId, zoningParams) {
+  static async validateEnvelope(envelopeId, zoningParams, enabledParams = {}) {
     try {
       // Get analytics from Giraffe (project-wide analytics)
       const analytics = await GiraffeAdapter.getAnalytics();
@@ -34,8 +35,16 @@ export class ValidationService {
       // Extract measurements
       const providedValues = extractDesignMeasurements(analytics);
 
-      // Perform validation
-      const validationResults = validateDesign(providedValues, zoningParams);
+      // Filter zoningParams to only include enabled parameters
+      const enabledZoningParams = {};
+      Object.keys(zoningParams).forEach(key => {
+        if (enabledParams[key]) {
+          enabledZoningParams[key] = zoningParams[key];
+        }
+      });
+
+      // Perform validation only on enabled parameters
+      const validationResults = validateDesign(providedValues, enabledZoningParams);
 
       return {
         status: validationResults.overallStatus,
@@ -44,7 +53,7 @@ export class ValidationService {
         breachCount: validationResults.breachCount,
         results: validationResults.results,
         providedValues,
-        zoningParams
+        zoningParams: enabledZoningParams
       };
     } catch (error) {
       console.error('Error validating envelope:', error);

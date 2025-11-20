@@ -155,31 +155,6 @@ const ValidationPanel = ({ validationResults, isLoading = false }) => {
           or update the envelope parameters to match your design intent.
         </motion.div>
       )}
-
-      {/* Debug: Show Provided Values */}
-      {validationResults.providedValues && (
-        <motion.details
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-3 text-xs"
-        >
-          <summary className="cursor-pointer font-semibold text-slate-700 hover:text-slate-900 mb-1">
-            📊 Analytics Data (Debug)
-          </summary>
-          <div className="mt-2 p-2 bg-slate-100 border border-slate-300 rounded font-mono text-[10px]">
-            <div className="space-y-1">
-              <div><strong>Max Height (ft):</strong> {validationResults.providedValues.maxHeightFt ?? 'null'}</div>
-              <div><strong>Min Height (ft):</strong> {validationResults.providedValues.minHeightFt ?? 'null'}</div>
-              <div><strong>Max Height (stories):</strong> {validationResults.providedValues.maxHeightStories ?? 'null'}</div>
-              <div><strong>Min Height (stories):</strong> {validationResults.providedValues.minHeightStories ?? 'null'}</div>
-              <div><strong>FAR:</strong> {validationResults.providedValues.far ?? 'null'}</div>
-              <div><strong>Density:</strong> {validationResults.providedValues.density ?? 'null'}</div>
-              <div><strong>Impervious Cover %:</strong> {validationResults.providedValues.imperviousCover ?? 'null'}</div>
-            </div>
-          </div>
-        </motion.details>
-      )}
     </motion.div>
   );
 };

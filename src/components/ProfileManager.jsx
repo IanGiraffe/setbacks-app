@@ -9,12 +9,14 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProfiles } from '../hooks/useProfiles';
 import { cn } from '../utils/cn';
-import { ZONING_PARAMETERS, SETBACK_PARAMETERS } from '../config/zoningParameters';
+import { ZONING_PARAMETERS, SETBACK_PARAMETERS, isStandardParameter } from '../config/zoningParameters';
 
 const ProfileManager = ({
   currentParameters,
   currentUnit,
-  onLoadProfile
+  onLoadProfile,
+  enabledParams,
+  customSetbacks
 }) => {
   const {
     profiles,
@@ -63,13 +65,34 @@ const ProfileManager = ({
       return;
     }
 
-    // Check if current parameters differ from selected profile
-    const isDifferent = Object.keys(currentParameters).some(
-      key => currentParameters[key] !== selectedProfile.parameters[key]
+    // Merge standard parameters with custom setbacks to get all current values
+    const allCurrentParams = { ...currentParameters, ...customSetbacks };
+    const profileParams = selectedProfile.parameters || {};
+
+    // Compare all keys from both objects
+    const allKeys = new Set([
+      ...Object.keys(allCurrentParams),
+      ...Object.keys(profileParams)
+    ]);
+
+    const paramsDifferent = Array.from(allKeys).some(key => {
+      const currentVal = allCurrentParams[key] ?? 0;
+      const profileVal = profileParams[key] ?? 0;
+      return Math.abs(currentVal - profileVal) > 0.001;
+    });
+
+    // Compare enabled state
+    const profileEnabled = selectedProfile.enabledParams || {};
+    const expectedEnabled = Object.keys(profileEnabled).length === 0
+      ? Object.keys(profileParams).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+      : profileEnabled;
+
+    const enabledDifferent = Array.from(allKeys).some(key =>
+      (enabledParams[key] ?? false) !== (expectedEnabled[key] ?? false)
     );
 
-    setHasUnsavedChanges(isDifferent);
-  }, [currentParameters, selectedProfileId, profiles]);
+    setHasUnsavedChanges(paramsDifferent || enabledDifferent);
+  }, [currentParameters, customSetbacks, enabledParams, selectedProfileId, profiles]);
 
   const handleProfileSelect = (profileId) => {
     if (profileId === 'new') {
@@ -80,18 +103,39 @@ const ProfileManager = ({
 
     const result = loadProfile(profileId);
     if (result.success) {
+      // Separate standard parameters from custom setbacks
+      const standardParams = {};
+      const customSetbacksToLoad = {};
+
+      Object.entries(result.parameters).forEach(([key, value]) => {
+        if (isStandardParameter(key)) {
+          standardParams[key] = value;
+        } else {
+          customSetbacksToLoad[key] = value;
+        }
+      });
+
+      // Build enabled params - if empty, enable all parameters in profile
+      const enabledParamsToPass = Object.keys(result.profile.enabledParams || {}).length === 0
+        ? Object.keys(result.parameters).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+        : result.profile.enabledParams;
+
       setSelectedProfileId(profileId);
       setHasUnsavedChanges(false);
-      onLoadProfile(result.parameters, result.unit);
+      onLoadProfile(standardParams, result.unit, enabledParamsToPass, customSetbacksToLoad);
     }
   };
 
   const handleSaveEdits = async () => {
     if (selectedProfileId === 'new') return;
 
+    // Merge standard parameters with custom setbacks
+    const allParams = { ...currentParameters, ...customSetbacks };
+
     const result = await updateProfile(selectedProfileId, {
-      parameters: currentParameters,
-      unit: currentUnit
+      parameters: allParams,
+      unit: currentUnit,
+      enabledParams: enabledParams
     });
 
     if (result.success) {
@@ -111,7 +155,10 @@ const ProfileManager = ({
       return;
     }
 
-    const result = await saveProfile(newProfileName, currentParameters, currentUnit);
+    // Merge standard parameters with custom setbacks
+    const allParams = { ...currentParameters, ...customSetbacks };
+
+    const result = await saveProfile(newProfileName, allParams, currentUnit, enabledParams);
 
     if (result.success) {
       setNewProfileName('');

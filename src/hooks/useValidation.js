@@ -8,7 +8,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { ValidationService } from '../domain/ValidationService';
 
-export const useValidation = (selectedEnvelope, zoningParams) => {
+export const useValidation = (selectedEnvelope, zoningParams, enabledParams = {}) => {
   const [validationResults, setValidationResults] = useState(null);
   const [isValidating, setIsValidating] = useState(false);
   const envelopeIdRef = useRef(null);
@@ -32,7 +32,8 @@ export const useValidation = (selectedEnvelope, zoningParams) => {
     try {
       const results = await ValidationService.validateEnvelope(
         selectedEnvelope.properties.id,
-        zoningParams
+        zoningParams,
+        enabledParams
       );
 
       setValidationResults(results);
@@ -43,7 +44,7 @@ export const useValidation = (selectedEnvelope, zoningParams) => {
     } finally {
       setIsValidating(false);
     }
-  }, [selectedEnvelope, zoningParams, isValidating]);
+  }, [selectedEnvelope, zoningParams, enabledParams, isValidating]);
 
   /**
    * Auto-validate only when envelope ID changes (not on every param change)

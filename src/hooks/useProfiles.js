@@ -84,9 +84,10 @@ export const useProfiles = () => {
    * @param {string} name - Profile name
    * @param {Object} parameters - Zoning parameters
    * @param {string} unit - Unit system
+   * @param {Object} enabledParams - Which parameters are enabled
    * @returns {Object} Result { success: boolean, profile?: Object, error?: string }
    */
-  const saveProfile = async (name, parameters, unit) => {
+  const saveProfile = async (name, parameters, unit, enabledParams = {}) => {
     try {
       setError(null);
 
@@ -98,7 +99,7 @@ export const useProfiles = () => {
         };
       }
 
-      const newProfile = createProfile(name, parameters, unit);
+      const newProfile = createProfile(name, parameters, unit, enabledParams);
       const validation = validateProfile(newProfile);
 
       if (!validation.isValid) {

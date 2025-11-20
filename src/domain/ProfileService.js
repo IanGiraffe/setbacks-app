@@ -17,14 +17,16 @@ import { getDefaultParameters } from '../config/zoningParameters';
  * @param {string} name - Profile name
  * @param {Object} parameters - Zoning parameters
  * @param {string} unit - Unit system (FEET or METERS)
+ * @param {Object} enabledParams - Which parameters are enabled
  * @returns {Object} Profile object
  */
-export const createProfile = (name, parameters, unit = 'FEET') => {
+export const createProfile = (name, parameters, unit = 'FEET', enabledParams = {}) => {
   return {
     id: generateProfileId(),
     name: name.trim(),
     parameters: { ...parameters },
     unit,
+    enabledParams: { ...enabledParams },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
