@@ -9,7 +9,8 @@ export const VALIDATION_STATUS = {
   COMPLIANT: 'compliant',
   BREACH: 'breach',
   WARNING: 'warning',
-  UNKNOWN: 'unknown'
+  UNKNOWN: 'unknown',
+  NOT_APPLICABLE: 'not_applicable'
 };
 
 export const VALIDATION_TYPES = {
@@ -67,4 +68,15 @@ export const VALIDATION_TOLERANCE = {
   FAR: 0.001,   // 0.001 FAR tolerance
   DENSITY: 0.01, // 0.01 units/acre tolerance
   IMPERVIOUS_COVER: 0.01 // 0.01% tolerance
+};
+
+/**
+ * Parameter display names for "not applicable" messages
+ */
+export const PARAMETER_NAMES = {
+  maxHeight: 'Max Height',
+  maxHeightStories: 'Max Height (Stories)',
+  maxFAR: 'Max FAR',
+  maxDensity: 'Max Density',
+  maxImperviousCover: 'Max Impervious Cover'
 };

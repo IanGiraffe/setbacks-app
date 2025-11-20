@@ -48,6 +48,12 @@ const ValidationPanel = ({ validationResults, isLoading = false }) => {
       border: 'border-slate-400',
       text: 'text-slate-600',
       icon: '?'
+    },
+    not_applicable: {
+      bg: 'bg-blue-50',
+      border: 'border-blue-400',
+      text: 'text-blue-700',
+      icon: '—'
     }
   };
 
@@ -102,7 +108,9 @@ const ValidationPanel = ({ validationResults, isLoading = false }) => {
               ? statusColors.breach
               : result.status === VALIDATION_STATUS.COMPLIANT
                 ? statusColors.compliant
-                : statusColors.unknown;
+                : result.status === VALIDATION_STATUS.NOT_APPLICABLE
+                  ? statusColors.not_applicable
+                  : statusColors.unknown;
 
             return (
               <motion.div
@@ -117,7 +125,9 @@ const ValidationPanel = ({ validationResults, isLoading = false }) => {
                     ? "bg-red-100 border-red-400"
                     : result.status === VALIDATION_STATUS.COMPLIANT
                       ? "bg-green-50 border-green-300"
-                      : "bg-slate-50 border-slate-300"
+                      : result.status === VALIDATION_STATUS.NOT_APPLICABLE
+                        ? "bg-blue-50 border-blue-300"
+                        : "bg-slate-50 border-slate-300"
                 )}
               >
                 <div className="flex items-start gap-2">
@@ -131,7 +141,9 @@ const ValidationPanel = ({ validationResults, isLoading = false }) => {
                         ? "text-red-900"
                         : result.status === VALIDATION_STATUS.COMPLIANT
                           ? "text-green-900"
-                          : "text-slate-700"
+                          : result.status === VALIDATION_STATUS.NOT_APPLICABLE
+                            ? "text-blue-800"
+                            : "text-slate-700"
                     )}>
                       {result.message}
                     </p>

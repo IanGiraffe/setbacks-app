@@ -47,6 +47,13 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
     });
   };
 
+  const handleToggleEnabled = (field) => {
+    onEnabledChange({
+      ...enabledParams,
+      [field]: !enabledParams[field]
+    });
+  };
+
   const handleCustomSetbackChange = (name, value) => {
     let numValue = parseFloat(value) || 0;
     // Round custom setbacks to 1 decimal place
@@ -222,7 +229,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
               id={field.key}
               value={field.noUnit ? setbacks[field.key] : formatValueForUnit(setbacks[field.key], currentUnit)}
               onChange={(e) => handleInputChange(field.key, e.target.value)}
-              disabled={disabled}
+              disabled={disabled || !enabledParams[field.key]}
               min="0"
               step={field.step || "0.1"}
               className={cn(
@@ -234,6 +241,22 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
               )}
               whileFocus={{ scale: 1.02 }}
             />
+            <motion.button
+              onClick={() => handleToggleEnabled(field.key)}
+              disabled={disabled}
+              className={cn(
+                "px-2 py-1.5 text-xs font-bold rounded border-2 transition-all duration-150",
+                "disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0",
+                enabledParams[field.key]
+                  ? "bg-green-100 border-green-600 text-green-700 hover:bg-green-200"
+                  : "bg-slate-100 border-slate-400 text-slate-600 hover:bg-slate-200"
+              )}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title={enabledParams[field.key] ? "Enabled - click to disable" : "Disabled - click to enable"}
+            >
+              {enabledParams[field.key] ? "ON" : "OFF"}
+            </motion.button>
           </motion.div>
         ))}
 
@@ -259,7 +282,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
                 id={field.key}
                 value={field.noUnit ? setbacks[field.key] : formatValueForUnit(setbacks[field.key], currentUnit)}
                 onChange={(e) => handleInputChange(field.key, e.target.value)}
-                disabled={disabled}
+                disabled={disabled || !enabledParams[field.key]}
                 min="0"
                 step={field.step || "0.1"}
                 className={cn(
@@ -271,6 +294,22 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
                 )}
                 whileFocus={{ scale: 1.02 }}
               />
+              <motion.button
+                onClick={() => handleToggleEnabled(field.key)}
+                disabled={disabled}
+                className={cn(
+                  "px-2 py-1.5 text-xs font-bold rounded border-2 transition-all duration-150",
+                  "disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0",
+                  enabledParams[field.key]
+                    ? "bg-green-100 border-green-600 text-green-700 hover:bg-green-200"
+                    : "bg-slate-100 border-slate-400 text-slate-600 hover:bg-slate-200"
+                )}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title={enabledParams[field.key] ? "Enabled - click to disable" : "Disabled - click to enable"}
+              >
+                {enabledParams[field.key] ? "ON" : "OFF"}
+              </motion.button>
             </motion.div>
           ))}
 

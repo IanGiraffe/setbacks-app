@@ -9,7 +9,7 @@
 import { GiraffeAdapter } from './GiraffeAdapter';
 import { extractDesignMeasurements, hasValidAnalytics } from '../utils/measurementUtils';
 import { validateDesign } from '../utils/validators';
-import { VALIDATION_STATUS } from '../constants/validationRules';
+import { VALIDATION_STATUS, PARAMETER_NAMES } from '../constants/validationRules';
 
 export class ValidationService {
   /**
@@ -46,12 +46,43 @@ export class ValidationService {
       // Perform validation only on enabled parameters
       const validationResults = validateDesign(providedValues, enabledZoningParams);
 
+      // Add NOT_APPLICABLE status for disabled parameters
+      const allParameters = ['maxHeight', 'maxHeightStories', 'maxFAR', 'maxDensity', 'maxImperviousCover'];
+      const disabledResults = {};
+
+      allParameters.forEach(paramKey => {
+        if (!enabledParams[paramKey]) {
+          // Map parameter keys to result keys
+          const resultKeyMap = {
+            maxHeight: 'heightFt',
+            maxHeightStories: 'heightStories',
+            maxFAR: 'far',
+            maxDensity: 'density',
+            maxImperviousCover: 'imperviousCover'
+          };
+
+          const resultKey = resultKeyMap[paramKey];
+          const paramName = PARAMETER_NAMES[paramKey] || paramKey;
+
+          disabledResults[resultKey] = {
+            status: VALIDATION_STATUS.NOT_APPLICABLE,
+            message: `${paramName} does not apply in this zoning profile`
+          };
+        }
+      });
+
+      // Merge validation results - disabled results take precedence over validation results
+      const allResults = {
+        ...validationResults.results,
+        ...disabledResults
+      };
+
       return {
         status: validationResults.overallStatus,
         isCompliant: validationResults.isCompliant,
         hasBreaches: validationResults.hasBreaches,
         breachCount: validationResults.breachCount,
-        results: validationResults.results,
+        results: allResults,
         providedValues,
         zoningParams: enabledZoningParams
       };
