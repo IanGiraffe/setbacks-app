@@ -253,7 +253,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
               )}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              title={enabledParams[field.key] ? "Enabled - click to disable" : "Disabled - click to enable"}
+              title={enabledParams[field.key] ? "Turn off validation for this parameter" : "Turn off validation for this parameter"}
             >
               {enabledParams[field.key] ? "ON" : "OFF"}
             </motion.button>
@@ -306,7 +306,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
                 )}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                title={enabledParams[field.key] ? "Enabled - click to disable" : "Disabled - click to enable"}
+                title={enabledParams[field.key] ? "Turn off validation for this parameter" : "Turn off validation for this parameter"}
               >
                 {enabledParams[field.key] ? "ON" : "OFF"}
               </motion.button>
