@@ -112,13 +112,13 @@ export const getDefaultParameters = () => {
 
 /**
  * Get default enabled state for all parameters
- * @returns {Object} Object with all parameter keys set to false (disabled by default)
+ * @returns {Object} Object with all parameter keys set to true (enabled by default)
  */
 export const getDefaultEnabledState = () => {
   const enabled = {};
 
   [...ZONING_PARAMETERS, ...SETBACK_PARAMETERS].forEach(param => {
-    enabled[param.key] = false; // Start with all disabled
+    enabled[param.key] = true; // Start with all enabled
   });
 
   return enabled;
