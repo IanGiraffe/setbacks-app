@@ -94,7 +94,83 @@ export class GiraffeAdapter {
       const result = await rpc.invoke('getAnalyticsResult', []);
       return result;
     } catch (error) {
+      console.error('Error getting analytics:', error);
       return null;
+    }
+  }
+
+  /**
+   * Debug analytics structure - logs the full analytics to console
+   * Use this to see what the actual structure looks like when measures return null
+   * @returns {Promise<void>}
+   */
+  static async debugAnalytics() {
+    try {
+      const analytics = await rpc.invoke('getAnalyticsResult', []);
+      
+      console.group('🔍 GIRAFFE ANALYTICS DEBUG');
+      console.log('📦 Full Analytics Object:', analytics);
+      
+      if (!analytics) {
+        console.error('❌ Analytics is null');
+        console.groupEnd();
+        return;
+      }
+
+      if (!analytics.grouped) {
+        console.error('❌ analytics.grouped is missing');
+        console.log('Available keys:', Object.keys(analytics));
+        console.groupEnd();
+        return;
+      }
+
+      const categoryIds = Object.keys(analytics.grouped);
+      console.log('📁 Categories:', categoryIds);
+
+      categoryIds.forEach((categoryId, index) => {
+        console.group(`📂 Category ${index + 1}: "${categoryId}"`);
+        
+        const category = analytics.grouped[categoryId];
+        
+        if (!category.usages) {
+          console.error('❌ No usages in this category');
+          console.groupEnd();
+          return;
+        }
+
+        const usageNames = Object.keys(category.usages);
+        console.log('🏷️  Usages:', usageNames);
+
+        usageNames.forEach(usageName => {
+          console.group(`🏷️  Usage: "${usageName}"`);
+          
+          const usage = category.usages[usageName];
+          
+          if (!usage.rows) {
+            console.error('❌ No rows');
+            console.groupEnd();
+            return;
+          }
+
+          console.log(`📊 ${usage.rows.length} rows`);
+          
+          const measures = usage.rows
+            .map(row => ({
+              name: row.measure?.name,
+              value: row.columns?.[0]?.value
+            }))
+            .filter(m => m.name);
+          
+          console.table(measures);
+          console.groupEnd();
+        });
+
+        console.groupEnd();
+      });
+
+      console.groupEnd();
+    } catch (error) {
+      console.error('Error debugging analytics:', error);
     }
   }
 

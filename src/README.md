@@ -64,8 +64,10 @@ Business logic and domain services following clean architecture principles:
   - Manages selected features and envelope features
   - Builds envelope feature GeoJSON structure
   - Extracts envelope parameters from features
-  - Retrieves analytics from Giraffe SDK
+  - Retrieves analytics from Giraffe SDK via `getAnalytics()`
+  - Provides `debugAnalytics()` method for troubleshooting analytics issues
 - **Architecture**: Provides a clean interface for Giraffe operations following Dependency Inversion Principle
+- **Debug Support**: Built-in debugging method to inspect analytics structure when measures return null
 
 ### `ProfileService.js`
 - **Purpose**: Domain service for managing zoning parameter profiles
@@ -222,6 +224,16 @@ React UI components organized by functionality:
   - Provides visual feedback for current unit selection
   - Triggers unit conversion in parent components
 
+### `AnalyticsDebugPanel.jsx`
+- **Purpose**: Debugging component for analytics issues (temporary use)
+- **Responsibilities**:
+  - Displays analytics structure in UI panel
+  - Lists all available measures with values
+  - Provides quick debug buttons for console logging
+  - Shows category/usage structure
+- **Use Case**: Temporarily add to app when analytics measures return null
+- **Usage**: Import and add `<AnalyticsDebugPanel />` to SetbacksApp, remove after debugging
+
 ## 📁 Services Directory (`/services/`)
 
 External API and data service integrations:
@@ -280,12 +292,23 @@ Utility functions and helper modules:
 ### `measurementUtils.js`
 - **Purpose**: Extracts and formats measurements from Giraffe analytics
 - **Functions**:
-  - `extractMeasure()` - Extract specific measure value from analytics
+  - `extractMeasure()` - Extract specific measure value from analytics (ROBUST: searches all categories/usages)
   - `extractDesignMeasurements()` - Extract all design measurements
   - `hasValidAnalytics()` - Check if analytics data is available
   - `formatMeasurement()` - Format measurement for display
 - **Analytics Structure**: Based on `rpc.invoke('getAnalyticsResult', [])` response format
 - **Integration**: Works with Giraffe SDK analytics API
+- **Robustness**: No longer hardcoded to specific category/usage names - searches through entire analytics structure
+- **Debug Mode**: Built-in debug logging to troubleshoot when measures return null
+
+### `analyticsDebugger.js`
+- **Purpose**: Debug utilities for inspecting Giraffe analytics structure
+- **Functions**:
+  - `debugAnalyticsStructure()` - Log full analytics structure to console
+  - `findMeasure()` - Locate where a specific measure exists in analytics
+  - `listAllMeasures()` - List all available measures with their locations
+- **Use Case**: Troubleshoot when analytics measures return null unexpectedly
+- **Usage**: Import and call functions to inspect analytics structure in browser console
 
 ### `validators.js`
 - **Purpose**: Pure validation functions for design compliance checking
