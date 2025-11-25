@@ -11,6 +11,7 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
   const [editingLabel, setEditingLabel] = React.useState(null);
   const [unnamedSetbacks, setUnnamedSetbacks] = React.useState(new Set());
   const [hoveredSetback, setHoveredSetback] = React.useState(null);
+  const [hoveredTooltip, setHoveredTooltip] = React.useState(null);
 
   // Wrap onLoadProfile to handle custom setbacks restoration
   const handleLoadProfileWrapper = React.useCallback((parameters, unit, enabled, customSetbacksToLoad) => {
@@ -241,22 +242,34 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
               )}
               whileFocus={{ scale: 1.02 }}
             />
-            <motion.button
-              onClick={() => handleToggleEnabled(field.key)}
-              disabled={disabled}
-              className={cn(
-                "px-2 py-1.5 text-xs font-bold rounded border-2 transition-all duration-150",
-                "disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0",
-                enabledParams[field.key]
-                  ? "bg-green-100 border-green-600 text-green-700 hover:bg-green-200"
-                  : "bg-slate-100 border-slate-400 text-slate-600 hover:bg-slate-200"
+            <div className="relative flex-shrink-0">
+              <motion.button
+                onClick={() => handleToggleEnabled(field.key)}
+                disabled={disabled}
+                onMouseEnter={() => setHoveredTooltip(field.key)}
+                onMouseLeave={() => setHoveredTooltip(null)}
+                className={cn(
+                  "px-2 py-1.5 text-xs font-bold rounded border-2 transition-all duration-150",
+                  "disabled:opacity-50 disabled:cursor-not-allowed",
+                  enabledParams[field.key]
+                    ? "bg-green-100 border-green-600 text-green-700 hover:bg-green-200"
+                    : "bg-slate-100 border-slate-400 text-slate-600 hover:bg-slate-200"
+                )}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {enabledParams[field.key] ? "ON" : "OFF"}
+              </motion.button>
+              {hoveredTooltip === field.key && (
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="absolute right-full mr-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-800 text-white text-xs rounded whitespace-nowrap pointer-events-none z-50"
+                >
+                  {enabledParams[field.key] ? "Turn off validation" : "Turn on validation"}
+                </motion.div>
               )}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              title={enabledParams[field.key] ? "Turn off validation for this parameter" : "Turn off validation for this parameter"}
-            >
-              {enabledParams[field.key] ? "ON" : "OFF"}
-            </motion.button>
+            </div>
           </motion.div>
         ))}
 
@@ -294,22 +307,34 @@ const SetbackForm = ({ setbacks, onChange, disabled, currentUnit, onUnitChange, 
                 )}
                 whileFocus={{ scale: 1.02 }}
               />
-              <motion.button
-                onClick={() => handleToggleEnabled(field.key)}
-                disabled={disabled}
-                className={cn(
-                  "px-2 py-1.5 text-xs font-bold rounded border-2 transition-all duration-150",
-                  "disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0",
-                  enabledParams[field.key]
-                    ? "bg-green-100 border-green-600 text-green-700 hover:bg-green-200"
-                    : "bg-slate-100 border-slate-400 text-slate-600 hover:bg-slate-200"
+              <div className="relative flex-shrink-0">
+                <motion.button
+                  onClick={() => handleToggleEnabled(field.key)}
+                  disabled={disabled}
+                  onMouseEnter={() => setHoveredTooltip(field.key)}
+                  onMouseLeave={() => setHoveredTooltip(null)}
+                  className={cn(
+                    "px-2 py-1.5 text-xs font-bold rounded border-2 transition-all duration-150",
+                    "disabled:opacity-50 disabled:cursor-not-allowed",
+                    enabledParams[field.key]
+                      ? "bg-green-100 border-green-600 text-green-700 hover:bg-green-200"
+                      : "bg-slate-100 border-slate-400 text-slate-600 hover:bg-slate-200"
+                  )}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {enabledParams[field.key] ? "ON" : "OFF"}
+                </motion.button>
+                {hoveredTooltip === field.key && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="absolute right-full mr-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-800 text-white text-xs rounded whitespace-nowrap pointer-events-none z-50"
+                  >
+                    {enabledParams[field.key] ? "Turn off validation" : "Turn on validation"}
+                  </motion.div>
                 )}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                title={enabledParams[field.key] ? "Turn off validation for this parameter" : "Turn off validation for this parameter"}
-              >
-                {enabledParams[field.key] ? "ON" : "OFF"}
-              </motion.button>
+              </div>
             </motion.div>
           ))}
 
